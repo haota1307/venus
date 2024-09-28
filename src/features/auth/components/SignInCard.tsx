@@ -28,7 +28,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
 
-  const handleProviderSignIn = (value: 'github' | 'google') => {
+  const onProviderSignIn = (value: 'github' | 'google') => {
     signIn(value, { redirectTo: '/' });
   };
 
@@ -72,7 +72,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={pending}
-            // onClick={() => onProviderSignIn('google')}
+            onClick={() => onProviderSignIn('google')}
             variant="outline"
             size="lg"
             className="relative w-full"
@@ -82,7 +82,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
           </Button>
           <Button
             disabled={pending}
-            onClick={() => handleProviderSignIn('github')}
+            onClick={() => onProviderSignIn('github')}
             variant="outline"
             size="lg"
             className="relative w-full"
