@@ -28,8 +28,25 @@ const SignInCard = ({ setState }: SignInCardProps) => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
 
+  const onPasswordSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setPending(true);
+
+    signIn('password', { email, password, flow: 'signIn' })
+      .catch(() => {
+        setError('Email hoặc mật khẩu không đúng');
+      })
+      .finally(() => {
+        setPending(false);
+      });
+  };
+
   const onProviderSignIn = (value: 'github' | 'google') => {
-    signIn(value, { redirectTo: '/' });
+    setPending(true);
+    signIn(value, { redirectTo: '/' }).finally(() => {
+      setPending(false);
+    });
   };
 
   return (
@@ -47,7 +64,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         </div>
       )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5" onSubmit={() => {}}>
+        <form className="space-y-2.5" onSubmit={onPasswordSignIn}>
           <Input
             disabled={pending}
             value={email}

@@ -14,18 +14,50 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { AuthFlow } from '@/features/auth/types';
+import { useAuthActions } from '@convex-dev/auth/react';
+import { ConvexError } from 'convex/values';
 
 interface SignUpCardProps {
   setState: (state: AuthFlow) => void;
 }
 
 const SignUpCard = ({ setState }: SignUpCardProps) => {
+  const { signIn } = useAuthActions();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+
+  const onPasswordSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError('Mật khẩu nhập lại không khớp');
+      return;
+    }
+
+    setPending(true);
+
+    signIn('password', { name, email, password, flow: 'signUp' })
+      .catch((err) => {
+        throw new ConvexError(err);
+        setError('Có lỗi xãy ra');
+        return;
+      })
+      .finally(() => {
+        setPending(false);
+      });
+  };
+
+  const onProviderSignUp = (value: 'github' | 'google') => {
+    setPending(true);
+    signIn(value, { redirectTo: '/' }).finally(() => {
+      setPending(false);
+    });
+  };
 
   return (
     <Card className="h-full w-full p-8">
@@ -42,12 +74,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         </div>
       )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form
-          onSubmit={() => {
-            /**TODO */
-          }}
-          className="space-y-2.5"
-        >
+        <form onSubmit={onPasswordSignUp} className="space-y-2.5">
           <Input
             disabled={pending}
             value={name}
@@ -88,9 +115,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={pending}
-            onSubmit={() => {
-              /**TODO */
-            }}
+            onSubmit={() => onProviderSignUp('google')}
             variant="outline"
             size="lg"
             className="relative w-full"
@@ -100,9 +125,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
           </Button>
           <Button
             disabled={pending}
-            onSubmit={() => {
-              /**TODO */
-            }}
+            onSubmit={() => onProviderSignUp('github')}
             variant="outline"
             size="lg"
             className="relative w-full"
