@@ -15,14 +15,11 @@ const UserButton = () => {
   const { signOut } = useAuthActions();
   const { data, isLoading } = useCurrentUser();
 
-  if (isLoading)
-    return <Loader className="size-4 animate-spin text-muted-foreground" />;
+  if (isLoading) return <Loader className="size-4 animate-spin text-muted-foreground" />;
 
   if (!data) return null;
 
   const { image, name } = data;
-
-  console.log(image);
 
   const avatarFallback = name!.charAt(0).toUpperCase();
 
