@@ -3,7 +3,7 @@
 import { useEffect, useMemo } from 'react';
 
 import UserButton from '@/features/auth/components/UserButton';
-import { useGetWorkspaces } from '@/features/workspaces/api/useGetWorkspace';
+import { useGetWorkspaces } from '@/features/workspaces/api/useGetWorkspaces';
 import { useCreateWorkspaceModal } from '@/features/workspaces/store/useCreateWorkspaceModal';
 import { useRouter } from 'next/navigation';
 
