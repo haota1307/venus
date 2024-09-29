@@ -32,7 +32,7 @@ const CreateWorkspaceModal = () => {
       { name },
       {
         onSuccess(workspaceId) {
-          toast.success('Không gian làm việc đã được tạo!');
+          toast.success('Workspace đã được tạo!');
           router.push(`/workspace/${workspaceId}`);
           handleClose();
         },
@@ -43,7 +43,7 @@ const CreateWorkspaceModal = () => {
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
-        <DialogHeader>Tạo không gian làm việc</DialogHeader>
+        <DialogHeader>Tạo Workspace</DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             value={name}

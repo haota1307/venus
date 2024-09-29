@@ -7,7 +7,7 @@ const workspaceIdPage = () => {
   const workspaceId = useWorkspaceId();
   const { data } = useGetWorkspace({ id: workspaceId });
 
-  return <div>ID: {JSON.stringify(data)}</div>;
+  return <div></div>;
 };
 
 export default workspaceIdPage;
