@@ -10,7 +10,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-[70px] h-full bg-fuchsia-800 flex flex-col pt-2 gap-y-4 items-center">
+    <aside className="w-[70px] h-full bg-fuchsia-900 flex flex-col pt-2 gap-y-4 items-center">
       <WorkspaceSwitcher />
       <SidebarButton icon={Home} label="Trang chủ" isActive={pathname.includes('/workspace')} />
       <SidebarButton icon={MessageSquare} label="Trò chuyện" />

@@ -1,5 +1,3 @@
-'use client';
-
 import Sidebar from '@/app/workspace/[workspaceId]/Sidebar';
 import Toolbar from '@/app/workspace/[workspaceId]/Toolbar';
 
