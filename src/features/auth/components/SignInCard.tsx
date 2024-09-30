@@ -5,13 +5,7 @@ import { TriangleAlert } from 'lucide-react';
 import { useAuthActions } from '@convex-dev/auth/react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { AuthFlow } from '@/features/auth/types';
@@ -53,9 +47,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
         <CardTitle>Đăng nhập để tiếp tục</CardTitle>
-        <CardDescription>
-          Sử dụng email của bạn hoặc dịch vụ khác để tiếp tục
-        </CardDescription>
+        <CardDescription>Sử dụng email của bạn hoặc dịch vụ khác để tiếp tục</CardDescription>
       </CardHeader>
       {!!error && (
         <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
@@ -110,10 +102,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         </div>
         <p className="text-xs text-muted-foreground">
           Bạn chưa có tài khoản?
-          <span
-            onClick={() => setState('signUp')}
-            className="text-sky-700 hover:underline cursor-pointer pl-1"
-          >
+          <span onClick={() => setState('signUp')} className="text-fuchsia-700 hover:underline cursor-pointer pl-1">
             Đăng ký
           </span>
         </p>

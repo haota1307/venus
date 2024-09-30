@@ -4,13 +4,7 @@ import { FaGithub } from 'react-icons/fa';
 import { TriangleAlert } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { AuthFlow } from '@/features/auth/types';
@@ -63,9 +57,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
         <CardTitle>Đăng ký để tiếp tục</CardTitle>
-        <CardDescription>
-          Sử dụng email của bạn hoặc dịch vụ khác để tiếp tục
-        </CardDescription>
+        <CardDescription>Sử dụng email của bạn hoặc dịch vụ khác để tiếp tục</CardDescription>
       </CardHeader>
       {!!error && (
         <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
@@ -136,10 +128,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         </div>
         <p className="text-xs text-muted-foreground">
           Bạn đã có tài khoản?
-          <span
-            onClick={() => setState('signIn')}
-            className="text-sky-700 hover:underline cursor-pointer pl-2"
-          >
+          <span onClick={() => setState('signIn')} className="text-fuchsia-700 hover:underline cursor-pointer pl-2">
             Đăng nhập
           </span>
         </p>

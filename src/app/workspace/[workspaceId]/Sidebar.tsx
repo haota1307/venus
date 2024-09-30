@@ -16,7 +16,7 @@ const Sidebar = () => {
       <SidebarButton icon={MessageSquare} label="Trò chuyện" />
       <SidebarButton icon={Bell} label="Hoạt động" />
       <SidebarButton icon={MoreHorizontal} label="Thêm" />
-      <div className="flex flex-col items-center justify-center gap-y-1 mt-auto">
+      <div className="flex flex-col items-center justify-center gap-y-1 mt-auto mb-4">
         <UserButton />
       </div>
     </aside>
