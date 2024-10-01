@@ -1,14 +1,23 @@
+import { AlertTriangle, HashIcon, Loader, MessageSquareText, SendHorizonal } from 'lucide-react';
+
+import SidebarItem from '@/app/workspace/[workspaceId]/SidebarItem';
 import WorkspaceHeader from '@/app/workspace/[workspaceId]/WorkspaceHeader';
+
+import { useGetChannels } from '@/features/channels/api/useGetChannels';
 import { useCurrentMember } from '@/features/members/api/useCurrentMember';
 import { useGetWorkspace } from '@/features/workspaces/api/useGetWorkspace';
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
-import { AlertTriangle, Loader } from 'lucide-react';
+import WorkspaceSection from '@/app/workspace/[workspaceId]/WorkspaceSection';
+import { useGetMembers } from '@/features/members/api/useGetMembers';
+import UserItem from '@/app/workspace/[workspaceId]/UserItem';
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
 
   const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
+  const { data: members, isLoading: membersLoading } = useGetMembers({ workspaceId });
   const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
+  const { data: channels, isLoading: channelsLoading } = useGetChannels({ workspaceId });
 
   if (workspaceLoading || memberLoading) {
     return (
@@ -30,6 +39,18 @@ const WorkspaceSidebar = () => {
   return (
     <div className="flex flex-col h-full">
       <WorkspaceHeader workspace={workspace} isAdmin={member.role === 'admin'} />
+      <div className="flex flex-col px-2 mt-3">
+        <SidebarItem label="Chủ đề" icon={MessageSquareText} id="threads" />
+        <SidebarItem label="Bản nháp & gửi" icon={SendHorizonal} id="drafts" />
+      </div>
+      <WorkspaceSection label="Kênh chat" hint="Kênh chat mới" onNew={() => {}}>
+        {channels?.map((item) => <SidebarItem key={item._id} icon={HashIcon} label={item.name} id={item._id} />)}
+      </WorkspaceSection>
+      <WorkspaceSection label="Chat với thành viên" hint="Tin nhắn mới" onNew={() => {}}>
+        {members?.map((item) => (
+          <UserItem key={item._id} id={item._id} label={item.user.name} image={item.user.image} />
+        ))}
+      </WorkspaceSection>
     </div>
   );
 };

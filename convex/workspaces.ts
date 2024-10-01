@@ -12,13 +12,10 @@ const generateCode = () => {
 };
 
 export const create = mutation({
-  args: {
-    name: v.string(),
-  },
+  args: { name: v.string() },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
-
-    if (!userId) throw new Error('Người dùng chưa đăng nhập!');
+    if (!userId) throw new Error('Unauthorized!');
 
     const joinCode = generateCode();
 
@@ -32,6 +29,11 @@ export const create = mutation({
       userId,
       workspaceId,
       role: 'admin',
+    });
+
+    await ctx.db.insert('channels', {
+      name: 'Tổng quan',
+      workspaceId,
     });
 
     return workspaceId;
