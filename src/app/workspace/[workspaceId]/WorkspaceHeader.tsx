@@ -13,6 +13,7 @@ import { Hint } from '@/components/hint';
 
 import { Doc } from '../../../../convex/_generated/dataModel';
 import PreferencesModal from '@/app/workspace/[workspaceId]/PreferencesModal';
+import InvateModal from '@/app/workspace/[workspaceId]/InvateModal';
 
 interface WorkspaceHeaderProps {
   workspace: Doc<'workspaces'>;
@@ -21,8 +22,16 @@ interface WorkspaceHeaderProps {
 
 const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [invateModalOpen, setInvateModalOpen] = useState(false);
+
   return (
     <>
+      <InvateModal
+        open={invateModalOpen}
+        setOpen={setInvateModalOpen}
+        name={workspace.name}
+        joinCode={workspace.joinCode}
+      />
       <PreferencesModal open={preferencesOpen} setOpen={setPreferencesOpen} initialValue={workspace.name} />
       <div className="flex items-center justify-between px-4 h-[49px] gap-0.5 bg-in">
         <DropdownMenu>
@@ -47,7 +56,12 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
             {isAdmin && (
               <>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer py-2 w-auto" onClick={() => {}}>
+                <DropdownMenuItem
+                  className="cursor-pointer py-2 w-auto"
+                  onClick={() => {
+                    setInvateModalOpen(true);
+                  }}
+                >
                   <p className="truncate">Mời mọi người tham gia {workspace.name}</p>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer py-2" onClick={() => setPreferencesOpen(true)}>
