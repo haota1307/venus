@@ -44,9 +44,7 @@ export const useConfirm = (title: string, message: string): [() => JSX.Element, 
           <Button onClick={handleCancel} variant="outline">
             Hủy
           </Button>
-          <Button onClick={handleConfirm} variant="destructive">
-            Đồng ý
-          </Button>
+          <Button onClick={handleConfirm}>Đồng ý</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
