@@ -63,10 +63,10 @@ export const create = mutation({
 
     if (!member || member.role !== 'admin') throw new Error('Không có quyền');
 
-    const parsedName = args.name.replace(/\s+/g, '-').toLowerCase();
+    console.log(args.name);
 
     const channelId = await ctx.db.insert('channels', {
-      name: parsedName,
+      name: args.name,
       workspaceId: args.workspaceId,
     });
 

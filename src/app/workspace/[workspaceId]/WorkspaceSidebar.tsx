@@ -6,13 +6,17 @@ import WorkspaceHeader from '@/app/workspace/[workspaceId]/WorkspaceHeader';
 import { useGetChannels } from '@/features/channels/api/useGetChannels';
 import { useCurrentMember } from '@/features/members/api/useCurrentMember';
 import { useGetWorkspace } from '@/features/workspaces/api/useGetWorkspace';
+import { useGetMembers } from '@/features/members/api/useGetMembers';
+import { useCreateChannelModal } from '@/features/channels/store/useCreateChannelModal';
+
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 import WorkspaceSection from '@/app/workspace/[workspaceId]/WorkspaceSection';
-import { useGetMembers } from '@/features/members/api/useGetMembers';
 import UserItem from '@/app/workspace/[workspaceId]/UserItem';
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
+
+  const [_, setOpen] = useCreateChannelModal();
 
   const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
   const { data: members, isLoading: membersLoading } = useGetMembers({ workspaceId });
@@ -43,7 +47,17 @@ const WorkspaceSidebar = () => {
         <SidebarItem label="Chủ đề" icon={MessageSquareText} id="threads" />
         <SidebarItem label="Bản nháp & gửi" icon={SendHorizonal} id="drafts" />
       </div>
-      <WorkspaceSection label="Kênh chat" hint="Kênh chat mới" onNew={() => {}}>
+      <WorkspaceSection
+        label="Kênh chat"
+        hint="Kênh chat mới"
+        onNew={
+          member.role === 'admin'
+            ? () => {
+                setOpen(true);
+              }
+            : undefined
+        }
+      >
         {channels?.map((item) => <SidebarItem key={item._id} icon={HashIcon} label={item.name} id={item._id} />)}
       </WorkspaceSection>
       <WorkspaceSection label="Chat với thành viên" hint="Tin nhắn mới" onNew={() => {}}>
