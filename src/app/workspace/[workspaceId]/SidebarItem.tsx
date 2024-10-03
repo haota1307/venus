@@ -34,7 +34,7 @@ const sidebarItemVariants = cva(
     variants: {
       variant: {
         default: 'text-[#F9EDFFCC]',
-        active: 'text-[#481349] bg-white/90 hover:bg-white/90',
+        active: 'text-[#481349] bg-white/80 hover:bg-white/80 font-semibold',
       },
     },
     defaultVariants: {

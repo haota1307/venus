@@ -12,9 +12,11 @@ import { useCreateChannelModal } from '@/features/channels/store/useCreateChanne
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 import WorkspaceSection from '@/app/workspace/[workspaceId]/WorkspaceSection';
 import UserItem from '@/app/workspace/[workspaceId]/UserItem';
+import { useChannelId } from '@/hooks/useChannelId';
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
+  const channelId = useChannelId();
 
   const [_, setOpen] = useCreateChannelModal();
 
@@ -58,7 +60,15 @@ const WorkspaceSidebar = () => {
             : undefined
         }
       >
-        {channels?.map((item) => <SidebarItem key={item._id} icon={HashIcon} label={item.name} id={item._id} />)}
+        {channels?.map((item) => (
+          <SidebarItem
+            key={item._id}
+            icon={HashIcon}
+            label={item.name}
+            id={item._id}
+            variant={channelId === item._id ? 'active' : 'default'}
+          />
+        ))}
       </WorkspaceSection>
       <WorkspaceSection label="Chat với thành viên" hint="Tin nhắn mới" onNew={() => {}}>
         {members?.map((item) => (
