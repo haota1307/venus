@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Hint } from '@/components/hint';
 import { Separator } from '@/components/ui/separator';
 
+import { EmojiPopover } from '@/components/EmojiPopover';
+
 type EditorValue = {
   image: File | null;
   body: string;
@@ -140,6 +142,12 @@ const Editor = ({
     }
   };
 
+  const onEmojiSelect = (emoji: any) => {
+    const quill = quillRef.current;
+
+    quill?.insertText(quill.getSelection()?.index || 0, emoji.native);
+  };
+
   const isEmpty = text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
   return (
@@ -154,11 +162,11 @@ const Editor = ({
             </Button>
           </Hint>
 
-          <Hint label="Biểu tượng cảm xúc">
-            <Button disabled={false} size={'iconSm'} variant={'ghost'} onClick={() => {}}>
+          <EmojiPopover onEmojiSelect={onEmojiSelect}>
+            <Button disabled={disable} size="iconSm" variant="ghost">
               <Smile className="size-4" />
             </Button>
-          </Hint>
+          </EmojiPopover>
 
           {variant === 'create' && (
             <Hint label="Hình ảnh">
@@ -205,19 +213,24 @@ const Editor = ({
         </div>
       </div>
 
-      <div className="p-1 text-[10px] text-muted-foreground flex justify-end items-center">
-        {!isEmpty && (
+      {variant === 'create' && (
+        <div
+          className={cn(
+            'p-1 text-[10px] text-muted-foreground flex justify-end items-center opacity-0 transition',
+            !isEmpty && 'opacity-100'
+          )}
+        >
           <>
             <p>
               <strong>Enter</strong> để gửi
             </p>
             <Separator orientation="vertical" className="mx-2 h-3" />
+            <p>
+              <strong>Shift + Enter</strong> để xuống hàng
+            </p>
           </>
-        )}
-        <p>
-          <strong>Shift + Enter</strong> để xuống hàng
-        </p>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
