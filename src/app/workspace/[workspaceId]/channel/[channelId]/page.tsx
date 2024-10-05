@@ -1,5 +1,6 @@
 'use client';
 
+import ChatInput from '@/app/workspace/[workspaceId]/channel/[channelId]/ChatInput';
 import Header from '@/app/workspace/[workspaceId]/channel/[channelId]/Header';
 import { useGetChannel } from '@/features/channels/api/useGetChannel';
 import { useChannelId } from '@/hooks/useChannelId';
@@ -30,6 +31,8 @@ const ChannelIdPage = () => {
   return (
     <div className="flex flex-col h-full">
       <Header title={channel.name} />
+      <div className="flex-1" />
+      <ChatInput placeholder={`Gừi tin nhắn đến #${channel.name}`} />
     </div>
   );
 };
