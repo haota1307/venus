@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRef, useState } from 'react';
+
 import Quill from 'quill';
 
 import { toast } from 'sonner';
@@ -7,12 +8,22 @@ import { toast } from 'sonner';
 import { useChannelId } from '@/hooks/useChannelId';
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 import { useCreateMessage } from '@/features/messages/api/useCreateMessage';
+import { useGenerateUploadUrl } from '@/features/upload/api/useGenerateUploadUrl';
+
+import { Id } from '../../../../../../convex/_generated/dataModel';
 
 const Editor = dynamic(() => import('@/components/Editor'), { ssr: false });
 
 interface ChatInputProps {
   placeholder: string;
 }
+
+type CreateMessageValues = {
+  channelId: Id<'channels'>;
+  workspaceId: Id<'workspaces'>;
+  body: string;
+  image: Id<'_storage'> | undefined;
+};
 
 const ChatInput = ({ placeholder }: ChatInputProps) => {
   const [editorKey, setEditorKey] = useState(0);
@@ -23,25 +34,51 @@ const ChatInput = ({ placeholder }: ChatInputProps) => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
 
+  const { mutate: generateUploadUrl } = useGenerateUploadUrl();
   const { mutate: createMessage } = useCreateMessage();
 
   const handleSubmit = async ({ body, image }: { body: string; image: File | null }) => {
     try {
       setIspending(true);
-      await createMessage(
-        {
-          workspaceId,
-          channelId,
-          body,
-        },
-        { throwError: true }
-      );
+      editorRef?.current?.enable(false);
+
+      const values: CreateMessageValues = {
+        body,
+        channelId,
+        image: undefined,
+        workspaceId,
+      };
+
+      if (image) {
+        const url = await generateUploadUrl({}, { throwError: true });
+
+        if (!url) {
+          throw new Error('URL hình ảnh không tồn tại');
+        }
+
+        const result = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': image.type },
+          body: image,
+        });
+
+        if (!result.ok) {
+          throw new Error('Upload hình ảnh thất bại');
+        }
+
+        const { storageId } = await result.json();
+
+        values.image = storageId;
+      }
+
+      await createMessage(values, { throwError: true });
 
       setEditorKey((prevKey) => prevKey + 1); // Giúp sau khi gửi tin nhắn thì ô soạn tin nhắn sẽ được reset
     } catch (error) {
       toast.error('Gửi tin nhắn thất bại!');
     } finally {
       setIspending(false);
+      editorRef?.current?.enable(true);
     }
   };
 
