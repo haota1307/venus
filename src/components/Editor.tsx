@@ -150,7 +150,7 @@ const Editor = ({
     quill?.insertText(quill.getSelection()?.index || 0, emoji.native);
   };
 
-  const isEmpty = text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+  const isEmpty = !image && text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
   return (
     <div className="flex flex-col">
@@ -162,7 +162,12 @@ const Editor = ({
         className="hidden"
       />
 
-      <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition">
+      <div
+        className={cn(
+          'flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition',
+          disable && 'opacity-50'
+        )}
+      >
         <div ref={containerRef} className="h-full ql-custom" />
 
         {!!image && (
@@ -226,7 +231,12 @@ const Editor = ({
                 )}
                 disabled={disable || isEmpty}
                 size={'iconSm'}
-                onClick={() => {}}
+                onClick={() => {
+                  onSubmit({
+                    body: JSON.stringify(quillRef.current?.getContents()),
+                    image,
+                  });
+                }}
               >
                 <SendHorizonal className="size-4" />
               </Button>
@@ -241,7 +251,12 @@ const Editor = ({
               <Button
                 variant={'secondary'}
                 size={'sm'}
-                onClick={() => {}}
+                onClick={() => {
+                  onSubmit({
+                    body: JSON.stringify(quillRef.current?.getContents()),
+                    image,
+                  });
+                }}
                 disabled={disable || isEmpty}
                 className={cn('bg-green-600 hover:bg-green-600/80 text-white')}
               >
