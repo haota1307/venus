@@ -3,15 +3,19 @@
 import ChatInput from '@/app/workspace/[workspaceId]/channel/[channelId]/ChatInput';
 import Header from '@/app/workspace/[workspaceId]/channel/[channelId]/Header';
 import { useGetChannel } from '@/features/channels/api/useGetChannel';
+import { useGetMessages } from '@/features/messages/api/useGetMessages';
 import { useChannelId } from '@/hooks/useChannelId';
 import { Loader, TriangleAlert } from 'lucide-react';
 
 const ChannelIdPage = () => {
   const channelId = useChannelId();
 
+  const { results, loadMore, status } = useGetMessages({ channelId });
   const { data: channel, isLoading: channelLoading } = useGetChannel({ id: channelId });
 
-  if (channelLoading) {
+  console.log({ results });
+
+  if (channelLoading || status === 'LoadingFirstPage') {
     return (
       <div className="h-full flex-1 flex items-center justify-center">
         <Loader className="size-5 text-muted-foreground animate-spin" />
