@@ -8,6 +8,7 @@ import { GetMessagesReturnType } from '@/features/messages/api/useGetMessages';
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 
 import Message from '@/components/Message';
+import ChannelHero from '@/components/ChannelHero';
 
 const TIME_THRESHOLD = 3;
 
@@ -45,6 +46,7 @@ const MessageList = ({
   isLoadingMore,
 }: MessageListProps) => {
   const [editingId, setEditingId] = useState<Id<'messages'> | null>(null);
+
   const workspaceId = useWorkspaceId();
   const { data: currentMember, isLoading } = useCurrentMember({ workspaceId });
 
@@ -106,6 +108,9 @@ const MessageList = ({
           })}
         </div>
       ))}
+      {variant === 'channel' && channelName && channelCreationTime && (
+        <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      )}
     </div>
   );
 };
