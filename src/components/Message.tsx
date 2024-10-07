@@ -7,6 +7,7 @@ import { Hint } from '@/components/hint';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { vi } from 'date-fns/locale';
 import Thumbnail from '@/components/Thumbnail';
+import { Toolbar } from '@/components/Toolbar';
 
 const Renderer = dynamic(() => import('@/components/Renderer'));
 
@@ -91,6 +92,7 @@ const Message = ({
           <div className="text-sm">
             <button className="font-bold text-primary hover:underline">{authorName}</button>
             <span>&nbsp;&nbsp;</span>
+
             <Hint label={formatFullTime(new Date(createdAt))}>
               <button className="text-xs text-muted-foreground hover:underline">
                 {format(new Date(createdAt), 'h:mm a', { locale: vi })}
@@ -99,11 +101,25 @@ const Message = ({
           </div>
           <div className="flex flex-col w-full">
             <Renderer value={body} />
+
             <Thumbnail url={image} />
+
             {updatedAt && <span className="text-xs text-muted-foreground">(đã chỉnh sửa)</span>}
           </div>
         </div>
       </div>
+
+      {!isEditing && (
+        <Toolbar
+          isAuthor={isAuthor}
+          isPending={false}
+          handleEdit={() => setEditingId(id)}
+          handleThread={() => {}}
+          handleDelete={() => {}}
+          handleReaction={() => {}}
+          hideThreadButton={hideThreadButton}
+        />
+      )}
     </div>
   );
 };
