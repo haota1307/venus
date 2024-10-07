@@ -32,9 +32,9 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
   const avatarFallback = label.charAt(0).toUpperCase();
 
   return (
-    <Button variant="transparent" className={cn(userItemVariants({ variant }), 'ml-1')} size="sm" asChild>
+    <Button variant="transparent" className={cn(userItemVariants({ variant }))} size="sm" asChild>
       <Link href={`workspace/${workspaceId}/member/${id}`}>
-        <Avatar className="size-5 mr-1 rounded-md">
+        <Avatar className="size-6 mr-1 rounded-md">
           <AvatarImage className="rounded-md shadow-inner" src={image} />
           <AvatarFallback className="bg-fuchsia-600 text-white shadow-md rounded-md text-sm">
             {avatarFallback}

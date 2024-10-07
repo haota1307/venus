@@ -148,3 +148,13 @@ body,
 .ql-tooltip.ql-editing::before {
   content: none !important; /* Ẩn nội dung ::before */
 }
+
+.messages-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 6px;
+}
+
+.messages-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 24px;
+  background-color: #dcdcdc;
+}

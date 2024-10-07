@@ -2,6 +2,7 @@
 
 import ChatInput from '@/app/workspace/[workspaceId]/channel/[channelId]/ChatInput';
 import Header from '@/app/workspace/[workspaceId]/channel/[channelId]/Header';
+import MessageList from '@/components/MessageList';
 import { useGetChannel } from '@/features/channels/api/useGetChannel';
 import { useGetMessages } from '@/features/messages/api/useGetMessages';
 import { useChannelId } from '@/hooks/useChannelId';
@@ -35,7 +36,14 @@ const ChannelIdPage = () => {
   return (
     <div className="flex flex-col h-full">
       <Header title={channel.name} />
-      <div className="flex-1" />
+      <MessageList
+        channelName={channel.name}
+        channelCreationTime={channel._creationTime}
+        data={results}
+        loadMore={loadMore}
+        isLoadingMore={status === 'LoadingMore'}
+        canLoadMore={status === 'CanLoadMore'}
+      />
       <ChatInput placeholder={`Gừi tin nhắn đến #${channel.name}`} />
     </div>
   );
