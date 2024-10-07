@@ -48,6 +48,7 @@ export const Toolbar = ({
                 <Pencil className="size-4" />
               </Button>
             </Hint>
+
             <Hint label="Xóa tin nhắn">
               <Button variant="ghost" size="iconSm" disabled={isPending} onClick={handleDelete}>
                 <Trash className="size-4" />

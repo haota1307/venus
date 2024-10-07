@@ -245,7 +245,7 @@ const Editor = ({
 
           {variant === 'update' && (
             <div className="ml-auto flex items-center gap-x-2">
-              <Button variant={'secondary'} size={'sm'} onClick={() => {}} disabled={false}>
+              <Button variant={'secondary'} size={'sm'} onClick={onCancel} disabled={false}>
                 Huỷ
               </Button>
               <Button
