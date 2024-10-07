@@ -1,3 +1,4 @@
+import React from 'react';
 import dynamic from 'next/dynamic';
 
 import { format, isToday, isYesterday } from 'date-fns';
@@ -8,14 +9,15 @@ import { vi } from 'date-fns/locale';
 
 import { useUpdateMessage } from '@/features/messages/api/useUpdateMessage';
 import { useRemoveMessage } from '@/features/messages/api/useRemoveMessage';
+import { useToggleReaction } from '@/features/reactions/api/useToggleReaction';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Hint } from '@/components/hint';
-import Thumbnail from '@/components/Thumbnail';
 import { Toolbar } from '@/components/Toolbar';
 import { toast } from 'sonner';
 import { useConfirm } from '@/hooks/useConfirm';
-import React from 'react';
+import Thumbnail from '@/components/Thumbnail';
+import Reactions from '@/components/Reactions';
 
 const Renderer = dynamic(() => import('@/components/Renderer'), { ssr: false });
 const Editor = dynamic(() => import('@/components/Editor'), { ssr: false });
@@ -74,8 +76,20 @@ const Message = ({
 
   const { mutate: updateMessage, isPending: isUpdatingMessage } = useUpdateMessage();
   const { mutate: removeMessage, isPending: isRemovingMessage } = useRemoveMessage();
+  const { mutate: toggleReaction, isPending: istogglingReaction } = useToggleReaction();
 
   const isPending = isUpdatingMessage || isRemovingMessage;
+
+  const handleCreation = (value: string) => {
+    toggleReaction(
+      { messageId: id, value },
+      {
+        onError: () => {
+          toast.error('Không thể thả biểu tượng cảm súc');
+        },
+      }
+    );
+  };
 
   const handleUpdate = ({ body }: { body: string }) => {
     updateMessage(
@@ -139,8 +153,12 @@ const Message = ({
             ) : (
               <div className="flex flex-col ">
                 <div className="flex-1 w-6" />
+
                 <Renderer value={body} />
+
                 {updatedAt && <span className="text-xs text-muted-foreground">(đã chỉnh sửa)</span>}
+
+                <Reactions data={reactions} onChange={handleCreation} />
               </div>
             )}
             {!isEditing && (
@@ -150,7 +168,7 @@ const Message = ({
                 handleEdit={() => setEditingId(id)}
                 handleThread={() => {}}
                 handleDelete={handleDelete}
-                handleReaction={() => {}}
+                handleReaction={handleCreation}
                 hideThreadButton={hideThreadButton}
               />
             )}
@@ -208,6 +226,8 @@ const Message = ({
                 <Thumbnail url={image} />
 
                 {updatedAt && <span className="text-xs text-muted-foreground">(đã chỉnh sửa)</span>}
+
+                <Reactions data={reactions} onChange={handleCreation} />
               </div>
             </div>
           )}
@@ -220,7 +240,7 @@ const Message = ({
             handleEdit={() => setEditingId(id)}
             handleThread={() => {}}
             handleDelete={handleDelete}
-            handleReaction={() => {}}
+            handleReaction={handleCreation}
             hideThreadButton={hideThreadButton}
           />
         )}
