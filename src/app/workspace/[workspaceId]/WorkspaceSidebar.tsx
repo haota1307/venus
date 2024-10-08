@@ -8,15 +8,17 @@ import { useCurrentMember } from '@/features/members/api/useCurrentMember';
 import { useGetWorkspace } from '@/features/workspaces/api/useGetWorkspace';
 import { useGetMembers } from '@/features/members/api/useGetMembers';
 import { useCreateChannelModal } from '@/features/channels/store/useCreateChannelModal';
-
+import { useChannelId } from '@/hooks/useChannelId';
+import { useMemberId } from '@/hooks/useMemberId';
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
+
 import WorkspaceSection from '@/app/workspace/[workspaceId]/WorkspaceSection';
 import UserItem from '@/app/workspace/[workspaceId]/UserItem';
-import { useChannelId } from '@/hooks/useChannelId';
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
+  const memberId = useMemberId();
 
   const [_, setOpen] = useCreateChannelModal();
 
@@ -72,7 +74,13 @@ const WorkspaceSidebar = () => {
       </WorkspaceSection>
       <WorkspaceSection label="Chat với thành viên" hint="Tin nhắn mới" onNew={() => {}}>
         {members?.map((item) => (
-          <UserItem key={item._id} id={item._id} label={item.user.name} image={item.user.image} />
+          <UserItem
+            key={item._id}
+            id={item._id}
+            label={item.user.name}
+            image={item.user.image}
+            variant={item._id === memberId ? 'active' : 'default'}
+          />
         ))}
       </WorkspaceSection>
     </div>

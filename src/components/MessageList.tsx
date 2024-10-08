@@ -10,6 +10,7 @@ import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 import Message from '@/components/Message';
 import ChannelHero from '@/components/ChannelHero';
 import { Loader } from 'lucide-react';
+import ConversationHero from '@/components/ConversationHero';
 
 const TIME_THRESHOLD = 3;
 
@@ -139,6 +140,10 @@ const MessageList = ({
 
       {variant === 'channel' && channelName && channelCreationTime && (
         <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      )}
+
+      {variant === 'conversation' && memberName && memberImage && (
+        <ConversationHero name={memberName} image={memberImage} />
       )}
     </div>
   );
