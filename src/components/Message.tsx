@@ -18,6 +18,7 @@ import { toast } from 'sonner';
 import { useConfirm } from '@/hooks/useConfirm';
 import Thumbnail from '@/components/Thumbnail';
 import Reactions from '@/components/Reactions';
+import { usePanel } from '@/hooks/usePanel';
 
 const Renderer = dynamic(() => import('@/components/Renderer'), { ssr: false });
 const Editor = dynamic(() => import('@/components/Editor'), { ssr: false });
@@ -74,6 +75,8 @@ const Message = ({
     'Bạn có chắc muốn xóa tin nhắn, tin nhắn sau khi xóa không thể hoàn tác'
   );
 
+  const { onClose, onOpenMessage, parentMessageId } = usePanel();
+
   const { mutate: updateMessage, isPending: isUpdatingMessage } = useUpdateMessage();
   const { mutate: removeMessage, isPending: isRemovingMessage } = useRemoveMessage();
   const { mutate: toggleReaction, isPending: istogglingReaction } = useToggleReaction();
@@ -106,7 +109,7 @@ const Message = ({
     );
   };
 
-  const handleDelete = async () => {
+  const handleRemove = async () => {
     const ok = await confirm();
     if (!ok) return;
 
@@ -115,6 +118,8 @@ const Message = ({
       {
         onSuccess: () => {
           toast.success('Tin nhắn đã được xóa');
+
+          if (parentMessageId === id) onClose();
         },
         onError: () => {
           toast.error('Xóa tin nhắn thất bại');
@@ -130,7 +135,7 @@ const Message = ({
         <div
           className={cn(
             'flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative',
-            isEditing && 'bg-yellow-500 hover:bg-yellow-50',
+            isEditing && 'bg-yellow-100 hover:bg-yellow-100',
             isRemovingMessage && 'transform transition-all scale-y-0 origin-bottom duration-200'
           )}
         >
@@ -166,8 +171,8 @@ const Message = ({
                 isAuthor={isAuthor}
                 isPending={isPending}
                 handleEdit={() => setEditingId(id)}
-                handleThread={() => {}}
-                handleDelete={handleDelete}
+                handleThread={() => onOpenMessage(id)}
+                handleDelete={handleRemove}
                 handleReaction={handleCreation}
                 hideThreadButton={hideThreadButton}
               />
@@ -238,8 +243,8 @@ const Message = ({
             isAuthor={isAuthor}
             isPending={isPending}
             handleEdit={() => setEditingId(id)}
-            handleThread={() => {}}
-            handleDelete={handleDelete}
+            handleThread={() => onOpenMessage(id)}
+            handleDelete={handleRemove}
             handleReaction={handleCreation}
             hideThreadButton={hideThreadButton}
           />

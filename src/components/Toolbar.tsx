@@ -29,14 +29,14 @@ export const Toolbar = ({
       <div className="group-hover:opacity-100 opacity-0 transition-opacity border bg-white rounded-md shadow-sm">
         <EmojiPopover hint="Thả cảm xúc" onEmojiSelect={(emoji) => handleReaction(emoji.native)}>
           <Button variant="ghost" size="iconSm" disabled={isPending}>
-            <Smile className="size-4" />
+            <Smile className="size-4 text-slate-600" />
           </Button>
         </EmojiPopover>
 
         {!hideThreadButton && (
           <Hint label="Trả lời tin nhắn">
             <Button variant="ghost" size="iconSm" disabled={isPending} onClick={handleThread}>
-              <MessageSquareTextIcon className="size-4" />
+              <MessageSquareTextIcon className="size-4 text-slate-700" />
             </Button>
           </Hint>
         )}
@@ -45,13 +45,13 @@ export const Toolbar = ({
           <>
             <Hint label="Chỉnh sửa tin nhắn">
               <Button variant="ghost" size="iconSm" disabled={isPending} onClick={handleEdit}>
-                <Pencil className="size-4" />
+                <Pencil className="size-4 text-slate-600" />
               </Button>
             </Hint>
 
             <Hint label="Xóa tin nhắn">
               <Button variant="ghost" size="iconSm" disabled={isPending} onClick={handleDelete}>
-                <Trash className="size-4" />
+                <Trash className="size-4 text-slate-600" />
               </Button>
             </Hint>
           </>

@@ -151,10 +151,9 @@ body,
 
 .messages-scrollbar::-webkit-scrollbar {
   width: 4px;
-  height: 6px;
 }
 
 .messages-scrollbar::-webkit-scrollbar-thumb {
-  border-radius: 24px;
+  border-radius: 4px;
   background-color: #dcdcdc;
 }
