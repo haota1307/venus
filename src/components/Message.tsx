@@ -19,6 +19,7 @@ import { useConfirm } from '@/hooks/useConfirm';
 import Thumbnail from '@/components/Thumbnail';
 import Reactions from '@/components/Reactions';
 import { usePanel } from '@/hooks/usePanel';
+import ThreadBar from '@/components/ThreadBar';
 
 const Renderer = dynamic(() => import('@/components/Renderer'), { ssr: false });
 const Editor = dynamic(() => import('@/components/Editor'), { ssr: false });
@@ -48,6 +49,7 @@ interface MessageProps {
   hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
+  threadName?: string;
   threadTimestamp?: number;
 }
 
@@ -68,6 +70,7 @@ const Message = ({
   hideThreadButton,
   threadCount,
   threadImage,
+  threadName,
   threadTimestamp,
 }: MessageProps) => {
   const [ConfirmDialog, confirm] = useConfirm(
@@ -77,9 +80,12 @@ const Message = ({
 
   const { onClose, onOpenMessage, parentMessageId } = usePanel();
 
-  const { mutate: updateMessage, isPending: isUpdatingMessage } = useUpdateMessage();
-  const { mutate: removeMessage, isPending: isRemovingMessage } = useRemoveMessage();
-  const { mutate: toggleReaction, isPending: istogglingReaction } = useToggleReaction();
+  const { mutate: updateMessage, isPending: isUpdatingMessage } =
+    useUpdateMessage();
+  const { mutate: removeMessage, isPending: isRemovingMessage } =
+    useRemoveMessage();
+  const { mutate: toggleReaction, isPending: istogglingReaction } =
+    useToggleReaction();
 
   const isPending = isUpdatingMessage || isRemovingMessage;
 
@@ -136,7 +142,8 @@ const Message = ({
           className={cn(
             'flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative',
             isEditing && 'bg-yellow-100 hover:bg-yellow-100',
-            isRemovingMessage && 'transform transition-all scale-y-0 origin-bottom duration-200'
+            isRemovingMessage &&
+              'transform transition-all scale-y-0 origin-bottom duration-200'
           )}
         >
           <div className="flex items-center gap-2">
@@ -161,9 +168,21 @@ const Message = ({
 
                 <Renderer value={body} />
 
-                {updatedAt && <span className="text-xs text-muted-foreground">(đã chỉnh sửa)</span>}
+                {updatedAt && (
+                  <span className="text-xs text-muted-foreground">
+                    (đã chỉnh sửa)
+                  </span>
+                )}
 
                 <Reactions data={reactions} onChange={handleCreation} />
+
+                <ThreadBar
+                  count={threadCount}
+                  image={threadImage}
+                  name={threadName}
+                  timestamp={threadTimestamp}
+                  onClick={() => onOpenMessage(id)}
+                />
               </div>
             )}
             {!isEditing && (
@@ -190,7 +209,8 @@ const Message = ({
         className={cn(
           'flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative',
           isEditing && 'bg-yellow-100/70 hover:bg-yellow-100/70',
-          isRemovingMessage && 'bg-rose-100 transform transition-all scale-y-0 origin-bottom duration-200'
+          isRemovingMessage &&
+            'bg-rose-100 transform transition-all scale-y-0 origin-bottom duration-200'
         )}
       >
         <div className="flex items-start gap-2">
@@ -216,7 +236,9 @@ const Message = ({
           ) : (
             <div className="flex flex-col w-full overflow-hidden">
               <div className="text-sm">
-                <button className="font-bold text-primary hover:underline">{authorName}</button>
+                <button className="font-bold text-primary hover:underline">
+                  {authorName}
+                </button>
                 <span>&nbsp;&nbsp;</span>
 
                 <Hint label={formatFullTime(new Date(createdAt))}>
@@ -230,7 +252,11 @@ const Message = ({
 
                 <Thumbnail url={image} />
 
-                {updatedAt && <span className="text-xs text-muted-foreground">(đã chỉnh sửa)</span>}
+                {updatedAt && (
+                  <span className="text-xs text-muted-foreground">
+                    (đã chỉnh sửa)
+                  </span>
+                )}
 
                 <Reactions data={reactions} onChange={handleCreation} />
               </div>
