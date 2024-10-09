@@ -13,14 +13,25 @@ interface WorkspaceSectionProps {
   onNew?: () => void;
 }
 
-const WorkspaceSection = ({ children, label, hint, onNew }: WorkspaceSectionProps) => {
+const WorkspaceSection = ({
+  children,
+  label,
+  hint,
+  onNew,
+}: WorkspaceSectionProps) => {
   const [on, toggle] = useToggle(true);
 
   return (
     <div className="flex flex-col mt-3 px-2">
       <div className="flex items-center px-3.5 group">
-        <Button variant="transparent" className="p-0.5 text-sm text-[#F9EDFFCC] shrink-0 size-6" onClick={toggle}>
-          <FaCaretRight className={cn('size-4 transition-transform', on && 'rotate-90 ')} />
+        <Button
+          variant="transparent"
+          className="p-0.5 text-sm text-[#F9EDFFCC] shrink-0 size-6"
+          onClick={toggle}
+        >
+          <FaCaretRight
+            className={cn('size-4 transition-transform', on && 'rotate-90 ')}
+          />
         </Button>
         <Button
           onClick={toggle}
@@ -43,7 +54,9 @@ const WorkspaceSection = ({ children, label, hint, onNew }: WorkspaceSectionProp
           </Hint>
         )}
       </div>
-      {on && children}
+      <div className="overflow-auto messages-scrollbar max-h-56">
+        {on && children}
+      </div>
     </div>
   );
 };

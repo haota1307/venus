@@ -1,6 +1,10 @@
 'use client';
 
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/components/ui/resizable';
 
 import Sidebar from '@/app/workspace/[workspaceId]/Sidebar';
 import Toolbar from '@/app/workspace/[workspaceId]/Toolbar';
@@ -10,14 +14,16 @@ import { usePanel } from '@/hooks/usePanel';
 import { Loader } from 'lucide-react';
 import { Id } from '../../../../convex/_generated/dataModel';
 import Thread from '@/features/messages/components/Thread';
+import Profile from '@/features/members/components/Profile';
 
 interface WorkspaceIdLayoutProps {
   children: React.ReactNode;
 }
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
-  const { parentMessageId, onClose } = usePanel();
+  const { parentMessageId, profileMemberId, onClose } = usePanel();
 
-  const showPanel = !!parentMessageId;
+  const showPanel = !!parentMessageId || !!profileMemberId;
+
   return (
     <div className="h-full">
       <Toolbar />
@@ -25,8 +31,16 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
       <div className="flex h-[calc(100vh-40px)] w-full">
         <Sidebar />
 
-        <ResizablePanelGroup direction="horizontal" autoSaveId="ca-workspace-layout">
-          <ResizablePanel defaultSize={20} minSize={11} maxSize={80} className="bg-fuchsia-900/95">
+        <ResizablePanelGroup
+          direction="horizontal"
+          autoSaveId="ca-workspace-layout"
+        >
+          <ResizablePanel
+            defaultSize={20}
+            minSize={11}
+            maxSize={80}
+            className="bg-fuchsia-900/95"
+          >
             <WorkspaceSidebar />
           </ResizablePanel>
           <ResizableHandle withHandle />
@@ -39,7 +53,15 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
               <ResizableHandle withHandle />
               <ResizablePanel minSize={20} defaultSize={30}>
                 {parentMessageId ? (
-                  <Thread messageId={parentMessageId as Id<'messages'>} onClose={onClose} />
+                  <Thread
+                    messageId={parentMessageId as Id<'messages'>}
+                    onClose={onClose}
+                  />
+                ) : profileMemberId ? (
+                  <Profile
+                    memberId={profileMemberId as Id<'members'>}
+                    onClose={onClose}
+                  />
                 ) : (
                   <div className="flex justify-center items-center h-full">
                     <Loader className="size-5 animate-spin text-muted-foreground" />

@@ -78,7 +78,7 @@ const Message = ({
     'Bạn có chắc muốn xóa tin nhắn, tin nhắn sau khi xóa không thể hoàn tác'
   );
 
-  const { onClose, onOpenMessage, parentMessageId } = usePanel();
+  const { onClose, onOpenMessage, parentMessageId, onOpenProfile } = usePanel();
 
   const { mutate: updateMessage, isPending: isUpdatingMessage } =
     useUpdateMessage();
@@ -214,7 +214,7 @@ const Message = ({
         )}
       >
         <div className="flex items-start gap-2">
-          <button>
+          <button onClick={() => onOpenProfile(memberId)}>
             <Avatar className="rounded-md">
               <AvatarImage className="rounded-md" src={authorImage} />
               <AvatarFallback className="rounded-md bg-fuchsia-700 text-white text-xs">
@@ -259,6 +259,14 @@ const Message = ({
                 )}
 
                 <Reactions data={reactions} onChange={handleCreation} />
+
+                <ThreadBar
+                  count={threadCount}
+                  image={threadImage}
+                  name={threadName}
+                  timestamp={threadTimestamp}
+                  onClick={() => onOpenMessage(id)}
+                />
               </div>
             </div>
           )}

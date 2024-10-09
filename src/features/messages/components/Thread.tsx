@@ -60,7 +60,9 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
   const { mutate: createMessage } = useCreateMessage();
 
   const { data: currentMember } = useCurrentMember({ workspaceId });
-  const { data: message, isLoading: loadingMessage } = useGetMessage({ id: messageId });
+  const { data: message, isLoading: loadingMessage } = useGetMessage({
+    id: messageId,
+  });
   const { results, status, loadMore } = useGetMessages({
     channelId,
     parentMessageId: messageId,
@@ -69,7 +71,13 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
   const canLoadMore = status === 'CanLoadMore';
   const isLoadingMore = status === 'LoadingMore';
 
-  const handleSubmit = async ({ body, image }: { body: string; image: File | null }) => {
+  const handleSubmit = async ({
+    body,
+    image,
+  }: {
+    body: string;
+    image: File | null;
+  }) => {
     try {
       setIspending(true);
       editorRef?.current?.enable(false);
@@ -136,11 +144,16 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
       <div className="h-full flex flex-col">
         <div className="flex justify-between items-center px-4 h-[49px] border-b">
           <p className="text-lg font-bold">Trả lời tin nhắn</p>
-          <Button onClick={onClose} size={'iconSm'} variant={'ghost'} className="mt-4">
+          <Button
+            onClick={onClose}
+            size={'iconSm'}
+            variant={'ghost'}
+            className="mt-4"
+          >
             <XIcon className="size-5 stroke-[1.5]" />
           </Button>
         </div>
-        <div className="flex items-center justify-center h-full mt-4">
+        <div className="flex items-center justify-center mt-4 flex-1">
           <Loader className="size-5 animate-spin text-muted-foreground" />
         </div>
       </div>
@@ -152,12 +165,12 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
       <div className="h-full flex flex-col">
         <div className="flex justify-between items-center px-4 h-[49px] border-b">
           <p className="text-lg font-bold">Trả lời tin nhắn</p>
-          <Button onClick={onClose} size={'iconSm'} variant={'ghost'} className="mt-4">
+          <Button onClick={onClose} size={'iconSm'} variant={'ghost'}>
             <XIcon className="size-5 stroke-[1.5]" />
           </Button>
         </div>
-        <div className="flex items-center justify-center h-full">
-          <AlertTriangle className="size-5 text-muted-foreground" />
+        <div className="flex items-center justify-center flex-1">
+          <AlertTriangle className="size-4 text-muted-foreground mr-2" />
           <p>Tin nhắn không còn tồn tại!</p>
         </div>
       </div>
@@ -168,7 +181,7 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center px-4 h-[49px] border-b">
         <p className="text-lg font-bold">Trả lời tin nhắn</p>
-        <Button onClick={onClose} size={'iconSm'} variant={'ghost'} className="mt-4">
+        <Button onClick={onClose} size={'iconSm'} variant={'ghost'}>
           <XIcon className="size-5 stroke-[1.5]" />
         </Button>
       </div>
@@ -186,8 +199,10 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
               const isCompact =
                 prevMessage &&
                 prevMessage.user._id === message.user._id &&
-                differenceInMinutes(new Date(message._creationTime), new Date(prevMessage._creationTime)) <
-                  TIME_THRESHOLD;
+                differenceInMinutes(
+                  new Date(message._creationTime),
+                  new Date(prevMessage._creationTime)
+                ) < TIME_THRESHOLD;
               return (
                 <Message
                   key={message._id}

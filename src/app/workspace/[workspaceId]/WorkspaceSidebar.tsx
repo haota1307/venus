@@ -1,4 +1,10 @@
-import { AlertTriangle, HashIcon, Loader, MessageSquareText, SendHorizonal } from 'lucide-react';
+import {
+  AlertTriangle,
+  HashIcon,
+  Loader,
+  MessageSquareText,
+  SendHorizonal,
+} from 'lucide-react';
 
 import SidebarItem from '@/app/workspace/[workspaceId]/SidebarItem';
 import WorkspaceHeader from '@/app/workspace/[workspaceId]/WorkspaceHeader';
@@ -22,10 +28,18 @@ const WorkspaceSidebar = () => {
 
   const [_, setOpen] = useCreateChannelModal();
 
-  const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
-  const { data: members, isLoading: membersLoading } = useGetMembers({ workspaceId });
-  const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
-  const { data: channels, isLoading: channelsLoading } = useGetChannels({ workspaceId });
+  const { data: member, isLoading: memberLoading } = useCurrentMember({
+    workspaceId,
+  });
+  const { data: members, isLoading: membersLoading } = useGetMembers({
+    workspaceId,
+  });
+  const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({
+    id: workspaceId,
+  });
+  const { data: channels, isLoading: channelsLoading } = useGetChannels({
+    workspaceId,
+  });
 
   console.log({ member, members });
   if (workspaceLoading || memberLoading) {
@@ -47,7 +61,10 @@ const WorkspaceSidebar = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <WorkspaceHeader workspace={workspace} isAdmin={member.role === 'admin'} />
+      <WorkspaceHeader
+        workspace={workspace}
+        isAdmin={member.role === 'admin'}
+      />
       <div className="flex flex-col px-2 mt-3">
         <SidebarItem label="Chủ đề" icon={MessageSquareText} id="threads" />
         <SidebarItem label="Bản nháp & gửi" icon={SendHorizonal} id="drafts" />
@@ -73,7 +90,11 @@ const WorkspaceSidebar = () => {
           />
         ))}
       </WorkspaceSection>
-      <WorkspaceSection label="Chat với thành viên" hint="Tin nhắn mới" onNew={() => {}}>
+      <WorkspaceSection
+        label="Chat với thành viên"
+        hint="Tin nhắn mới"
+        onNew={() => {}}
+      >
         {members?.map((item) => (
           <UserItem
             key={item._id}
