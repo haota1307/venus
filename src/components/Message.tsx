@@ -94,7 +94,7 @@ const Message = ({
       { messageId: id, value },
       {
         onError: () => {
-          toast.error('Không thể thả biểu tượng cảm súc');
+          toast.error('Không thể thả biểu tượng cảm xúc');
         },
       }
     );

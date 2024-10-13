@@ -1,6 +1,18 @@
 import Image from 'next/image';
-import React, { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ALargeSmall, ImagePlusIcon, SendHorizonal, Smile, XIcon } from 'lucide-react';
+import React, {
+  MutableRefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+import {
+  ALargeSmall,
+  ImagePlusIcon,
+  SendHorizonal,
+  Smile,
+  XIcon,
+} from 'lucide-react';
 
 import Quill, { type QuillOptions } from 'quill';
 import { Delta, Op } from 'quill/core';
@@ -61,13 +73,19 @@ const Editor = ({
     if (!containerRef.current) return;
 
     const container = containerRef.current;
-    const editorContainer = container.appendChild(container.ownerDocument.createElement('div'));
+    const editorContainer = container.appendChild(
+      container.ownerDocument.createElement('div')
+    );
 
     const options: QuillOptions = {
       theme: 'snow',
       placeholder: placeholderRef.current,
       modules: {
-        toolbar: [['bold', 'italic', 'strike'], ['link'], [{ list: 'ordered' }, { list: 'bullet' }]],
+        toolbar: [
+          ['bold', 'italic', 'strike'],
+          ['link'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+        ],
         keyboard: {
           bindings: {
             enter: {
@@ -76,7 +94,9 @@ const Editor = ({
                 const text = quill.getText();
                 const addedImage = imageElementRef.current?.files?.[0] || null;
 
-                const isEmpty = !addedImage && text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+                const isEmpty =
+                  !addedImage &&
+                  text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
                 if (isEmpty) return;
 
@@ -144,10 +164,10 @@ const Editor = ({
     }
   };
 
-  const onEmojiSelect = (emoji: any) => {
+  const onEmojiSelect = (emojiValue: string) => {
     const quill = quillRef.current;
 
-    quill?.insertText(quill.getSelection()?.index || 0, emoji.native);
+    quill?.insertText(quill.getSelection()?.index || 0, emojiValue);
   };
 
   const isEmpty = !image && text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
@@ -195,8 +215,17 @@ const Editor = ({
         )}
 
         <div className="flex px-2 pb-2">
-          <Hint label={isToolbarVisible ? 'Mở thanh định dạng' : 'Ẩn thanh định dạng'}>
-            <Button disabled={false} size={'iconSm'} variant={'ghost'} onClick={toggleToolbar}>
+          <Hint
+            label={
+              isToolbarVisible ? 'Mở thanh định dạng' : 'Ẩn thanh định dạng'
+            }
+          >
+            <Button
+              disabled={false}
+              size={'iconSm'}
+              variant={'ghost'}
+              onClick={toggleToolbar}
+            >
               <ALargeSmall className="size-4" />
             </Button>
           </Hint>
@@ -245,7 +274,12 @@ const Editor = ({
 
           {variant === 'update' && (
             <div className="ml-auto flex items-center gap-x-2">
-              <Button variant={'secondary'} size={'sm'} onClick={onCancel} disabled={false}>
+              <Button
+                variant={'secondary'}
+                size={'sm'}
+                onClick={onCancel}
+                disabled={false}
+              >
                 Huỷ
               </Button>
               <Button
