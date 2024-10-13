@@ -92,7 +92,7 @@ const WorkspaceSidebar = () => {
       </WorkspaceSection>
       <WorkspaceSection
         label="Chat với thành viên"
-        hint="Tin nhắn mới"
+        hint="Thêm thành viên"
         onNew={() => {}}
       >
         {members?.map((item) => (

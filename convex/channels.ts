@@ -14,14 +14,18 @@ export const get = query({
 
     const member = await ctx.db
       .query('members')
-      .withIndex('by_workspace_id_user_id', (q) => q.eq('workspaceId', args.workspaceId).eq('userId', userId))
+      .withIndex('by_workspace_id_user_id', (q) =>
+        q.eq('workspaceId', args.workspaceId).eq('userId', userId)
+      )
       .unique();
 
     if (!member) return [];
 
     const channels = await ctx.db
       .query('channels')
-      .withIndex('by_workspace_id', (q) => q.eq('workspaceId', args.workspaceId))
+      .withIndex('by_workspace_id', (q) =>
+        q.eq('workspaceId', args.workspaceId)
+      )
       .collect();
 
     return channels;
@@ -40,7 +44,9 @@ export const getById = query({
 
     const member = await ctx.db
       .query('members')
-      .withIndex('by_workspace_id_user_id', (q) => q.eq('workspaceId', channel.workspaceId).eq('userId', userId))
+      .withIndex('by_workspace_id_user_id', (q) =>
+        q.eq('workspaceId', channel.workspaceId).eq('userId', userId)
+      )
       .unique();
 
     if (!member) return null;
@@ -58,12 +64,12 @@ export const create = mutation({
 
     const member = await ctx.db
       .query('members')
-      .withIndex('by_workspace_id_user_id', (q) => q.eq('workspaceId', args.workspaceId).eq('userId', userId))
+      .withIndex('by_workspace_id_user_id', (q) =>
+        q.eq('workspaceId', args.workspaceId).eq('userId', userId)
+      )
       .unique();
 
     if (!member || member.role !== 'admin') throw new Error('Không có quyền');
-
-    console.log(args.name);
 
     const channelId = await ctx.db.insert('channels', {
       name: args.name,
@@ -89,7 +95,9 @@ export const update = mutation({
 
     const member = await ctx.db
       .query('members')
-      .withIndex('by_workspace_id_user_id', (q) => q.eq('workspaceId', channel.workspaceId).eq('userId', userId))
+      .withIndex('by_workspace_id_user_id', (q) =>
+        q.eq('workspaceId', channel.workspaceId).eq('userId', userId)
+      )
       .unique();
 
     if (!member || member.role !== 'admin') throw new Error('Không có quyền');
@@ -116,12 +124,23 @@ export const remove = mutation({
 
     const member = await ctx.db
       .query('members')
-      .withIndex('by_workspace_id_user_id', (q) => q.eq('workspaceId', channel.workspaceId).eq('userId', userId))
+      .withIndex('by_workspace_id_user_id', (q) =>
+        q.eq('workspaceId', channel.workspaceId).eq('userId', userId)
+      )
       .unique();
 
     if (!member || member.role !== 'admin') throw new Error('Không có quyền');
 
-    // TODO: Xóa các tin nhắn liên quan
+    const [messages] = await Promise.all([
+      ctx.db
+        .query('messages')
+        .withIndex('by_channel_id', (q) => q.eq('channelId', id))
+        .collect(),
+    ]);
+
+    for (const message of messages) {
+      await ctx.db.delete(message._id);
+    }
 
     await ctx.db.delete(id);
 

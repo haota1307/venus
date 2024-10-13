@@ -6,6 +6,7 @@ import { Loader } from 'lucide-react';
 import Header from '@/app/workspace/[workspaceId]/member/[memberId]/Header';
 import ChatInput from '@/app/workspace/[workspaceId]/member/[memberId]/ChatInput';
 import MessageList from '@/components/MessageList';
+import { usePanel } from '@/hooks/usePanel';
 
 interface ConversationProps {
   id: Id<'conversations'>;
@@ -14,7 +15,11 @@ interface ConversationProps {
 const Conversation = ({ id }: ConversationProps) => {
   const memberId = useMemberId();
 
-  const { data: member, isLoading: memberLoading } = useGetMember({ id: memberId });
+  const { onOpenProfile } = usePanel();
+
+  const { data: member, isLoading: memberLoading } = useGetMember({
+    id: memberId,
+  });
   const { loadMore, results, status } = useGetMessages({
     conversationId: id,
   });
@@ -27,7 +32,11 @@ const Conversation = ({ id }: ConversationProps) => {
 
   return (
     <div className="flex flex-col h-full">
-      <Header memberName={member?.user.name} memberImage={member?.user.image} onClick={() => {}} />
+      <Header
+        memberName={member?.user.name}
+        memberImage={member?.user.image}
+        onClick={() => onOpenProfile(memberId)}
+      />
       <MessageList
         data={results}
         variant="conversation"
@@ -37,7 +46,10 @@ const Conversation = ({ id }: ConversationProps) => {
         isLoadingMore={status === 'LoadingMore'}
         canLoadMore={status === 'CanLoadMore'}
       />
-      <ChatInput placeholder={`Gửi tin nhắn cho ${member?.user.name}`} conversationId={id} />
+      <ChatInput
+        placeholder={`Gửi tin nhắn cho ${member?.user.name}`}
+        conversationId={id}
+      />
     </div>
   );
 };

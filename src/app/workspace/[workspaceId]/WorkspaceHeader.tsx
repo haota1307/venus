@@ -32,17 +32,29 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
         name={workspace.name}
         joinCode={workspace.joinCode}
       />
-      <PreferencesModal open={preferencesOpen} setOpen={setPreferencesOpen} initialValue={workspace.name} />
+      <PreferencesModal
+        open={preferencesOpen}
+        setOpen={setPreferencesOpen}
+        initialValue={workspace.name}
+      />
       <div className="flex items-center justify-between px-4 h-[49px] gap-0.5 bg-in">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant={'transparent'} className="font-semibold text-lg w-auto p-1.5 overflow-hidden" size={'sm'}>
+            <Button
+              variant={'transparent'}
+              className="font-semibold text-lg w-auto p-1.5 overflow-hidden"
+              size={'sm'}
+            >
               <span className="truncate">{workspace.name}</span>
               <ChevronDown className="size-4 ml-1 shrink-0" />
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent side="bottom" align="start" className="w-64 overflow-hidden">
+          <DropdownMenuContent
+            side="bottom"
+            align="start"
+            className="w-64 overflow-hidden"
+          >
             <DropdownMenuItem className="cursor-pointer capitalize">
               <div className="size-8 relative overflow-hidden text-white font-semibold text-xl rounded-md flex items-center justify-center mr-2 bg-fuchsia-700 shadow-md">
                 {workspace.name.charAt(0).toUpperCase()}
@@ -62,9 +74,14 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
                     setInvateModalOpen(true);
                   }}
                 >
-                  <p className="truncate">Mời mọi người tham gia {workspace.name}</p>
+                  <p className="truncate">
+                    Mời mọi người tham gia {workspace.name}
+                  </p>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer py-2" onClick={() => setPreferencesOpen(true)}>
+                <DropdownMenuItem
+                  className="cursor-pointer py-2"
+                  onClick={() => setPreferencesOpen(true)}
+                >
                   Tùy chọn
                 </DropdownMenuItem>
               </>
