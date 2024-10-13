@@ -33,7 +33,9 @@ const InvateModal = ({ open, setOpen, joinCode, name }: InvateModalProps) => {
   const handleCopy = () => {
     const inviteLink = `${window.location.origin}/join/${workspaceId}`;
 
-    navigator.clipboard.writeText(inviteLink).then(() => toast.success('Liên kết đã được sao chép'));
+    navigator.clipboard
+      .writeText(inviteLink)
+      .then(() => toast.success('Liên kết đã được sao chép'));
   };
 
   const { mutate, isPending } = useNewJoinCode();
@@ -62,18 +64,26 @@ const InvateModal = ({ open, setOpen, joinCode, name }: InvateModalProps) => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Mời mọi người tham gia '{name}'</DialogTitle>
-            <DialogDescription>Sử dụng mã mời bên dưới để mời mọi người tham gia '{name}'</DialogDescription>
+            <DialogTitle>Mời mọi người tham gia {name}</DialogTitle>
+            <DialogDescription>
+              Sử dụng mã mời bên dưới để mời mọi người tham gia {name}
+            </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-y-4 items-center justify-center py-10">
-            <p className="text-4xl font-bold tracking-widest uppercase">{joinCode}</p>
+            <p className="text-4xl font-bold tracking-widest uppercase">
+              {joinCode}
+            </p>
             <Button onClick={handleCopy} variant={'ghost'} size={'sm'}>
               Sao chép liên kết tham gia
               <Copy className="size-4 ml-2" />
             </Button>
           </div>
           <div className="flex items-center justify-between w-full">
-            <Button onClick={handleNewCode} variant={'outline'} disabled={isPending}>
+            <Button
+              onClick={handleNewCode}
+              variant={'outline'}
+              disabled={isPending}
+            >
               Tạo mới
               <RefreshCcw className="size-4 ml-2" />
             </Button>

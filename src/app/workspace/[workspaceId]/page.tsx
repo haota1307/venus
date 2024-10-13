@@ -9,22 +9,30 @@ import { useCreateChannelModal } from '@/features/channels/store/useCreateChanne
 import { Loader, TriangleAlert } from 'lucide-react';
 import { useCurrentMember } from '@/features/members/api/useCurrentMember';
 
-const workspaceIdPage = () => {
+const WorkspaceIdPage = () => {
   const router = useRouter();
 
   const workspaceId = useWorkspaceId();
 
   const [opne, setOpen] = useCreateChannelModal();
 
-  const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({ id: workspaceId });
-  const { data: channels, isLoading: channelsLoading } = useGetChannels({ workspaceId });
-  const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
+  const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({
+    id: workspaceId,
+  });
+  const { data: channels, isLoading: channelsLoading } = useGetChannels({
+    workspaceId,
+  });
+  const { data: member, isLoading: memberLoading } = useCurrentMember({
+    workspaceId,
+  });
 
   const channelId = useMemo(() => channels?.[0]?._id, [channels]);
   const isAdmin = useMemo(() => member?.role === 'admin', [member?.role]);
 
   useEffect(() => {
-    const loading = [workspaceLoading, channelsLoading, memberLoading].some(Boolean);
+    const loading = [workspaceLoading, channelsLoading, memberLoading].some(
+      Boolean
+    );
 
     if (loading || !workspace || !member) return;
 
@@ -59,7 +67,9 @@ const workspaceIdPage = () => {
     return (
       <div className="h-full flex-1 flex items-center justify-center flex-col gap-2">
         <TriangleAlert className="size-6 text-muted-foreground" />
-        <span className="text-sm text-muted-foreground">Workspace không tồn tại</span>
+        <span className="text-sm text-muted-foreground">
+          Workspace không tồn tại
+        </span>
       </div>
     );
   }
@@ -67,9 +77,11 @@ const workspaceIdPage = () => {
   return (
     <div className="h-full flex-1 flex items-center justify-center flex-col gap-2">
       <TriangleAlert className="size-6 text-muted-foreground" />
-      <span className="text-sm text-muted-foreground">Kênh chat không tồn tại</span>
+      <span className="text-sm text-muted-foreground">
+        Kênh chat không tồn tại
+      </span>
     </div>
   );
 };
 
-export default workspaceIdPage;
+export default WorkspaceIdPage;

@@ -48,7 +48,9 @@ const JoinPage = ({ params }: JoinPageProps) => {
           toast.success('Tham gia workspace thành công');
         },
         onError: () => {
-          toast.error('Tham gia workspace không thành công, có thể mã mời của bạn bị sai.');
+          toast.error(
+            'Tham gia workspace không thành công, có thể mã mời của bạn bị sai.'
+          );
         },
       }
     );
@@ -67,15 +69,20 @@ const JoinPage = ({ params }: JoinPageProps) => {
       <Image alt="logo" src={'/logo.svg'} width={100} height={100} />
       <div className="flex flex-col gap-y-4 items-center justify-center max-w-lg">
         <div className="flex flex-col gap-y-2 items-center justify-center">
-          <h2 className="text-2xl font-bold">Tham gia "{data?.name}"</h2>
-          <p className="text-md text-muted-foreground">Nhập mã mời để tham gia</p>
+          <h2 className="text-2xl font-bold">Tham gia {data?.name}</h2>
+          <p className="text-md text-muted-foreground">
+            Nhập mã mời để tham gia
+          </p>
         </div>
         <VerificationInput
           onComplete={handleComplte}
           autoFocus
           length={8}
           classNames={{
-            container: cn('flex gap-x-2', isPending && 'opacity-50 cursor-not-allowed'),
+            container: cn(
+              'flex gap-x-2',
+              isPending && 'opacity-50 cursor-not-allowed'
+            ),
             character:
               'uppercase h-full rounded-md border border-gray-300 flex items-center justify-center text-lg font-medium text-gray-500',
             characterInactive: 'bg-muted',
