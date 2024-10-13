@@ -167,6 +167,7 @@ const Message = ({
                 <div className="flex-1 w-6" />
 
                 <Renderer value={body} />
+                <Thumbnail url={image} />
 
                 {updatedAt && (
                   <span className="text-xs text-muted-foreground">
