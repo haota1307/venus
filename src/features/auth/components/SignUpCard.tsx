@@ -4,12 +4,19 @@ import { FaGithub } from 'react-icons/fa';
 import { TriangleAlert } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { AuthFlow } from '@/features/auth/types';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { ConvexError } from 'convex/values';
+import { useCheckEmailExists } from '@/features/auth/components/api/useCheckEmailExists';
 
 interface SignUpCardProps {
   setState: (state: AuthFlow) => void;
@@ -25,6 +32,8 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
 
+  const { data: emailExists, isCheckingEmail } = useCheckEmailExists(email);
+
   const onPasswordSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -33,13 +42,16 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
       return;
     }
 
+    if (emailExists) {
+      setError('Email này đã được sử dụng');
+      return;
+    }
+
     setPending(true);
 
     signIn('password', { name, email, password, flow: 'signUp' })
       .catch((err) => {
         throw new ConvexError(err);
-        setError('Có lỗi xãy ra');
-        return;
       })
       .finally(() => {
         setPending(false);
@@ -57,7 +69,9 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
         <CardTitle>Đăng ký để tiếp tục</CardTitle>
-        <CardDescription>Sử dụng email của bạn hoặc dịch vụ khác để tiếp tục</CardDescription>
+        <CardDescription>
+          Sử dụng email của bạn hoặc dịch vụ khác để tiếp tục
+        </CardDescription>
       </CardHeader>
       {!!error && (
         <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
@@ -107,7 +121,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={pending}
-            onSubmit={() => onProviderSignUp('google')}
+            onClick={() => onProviderSignUp('google')}
             variant="outline"
             size="lg"
             className="relative w-full"
@@ -117,7 +131,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
           </Button>
           <Button
             disabled={pending}
-            onSubmit={() => onProviderSignUp('github')}
+            onClick={() => onProviderSignUp('github')}
             variant="outline"
             size="lg"
             className="relative w-full"
@@ -128,7 +142,10 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         </div>
         <p className="text-xs text-muted-foreground">
           Bạn đã có tài khoản?
-          <span onClick={() => setState('signIn')} className="text-fuchsia-700 hover:underline cursor-pointer pl-2">
+          <span
+            onClick={() => setState('signIn')}
+            className="text-fuchsia-700 hover:underline cursor-pointer pl-2"
+          >
             Đăng nhập
           </span>
         </p>
