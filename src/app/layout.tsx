@@ -7,6 +7,7 @@ import { ConvexClientProvider } from '@/components/ConvexClientProvider';
 import Modals from '@/components/Modal';
 import { JotaiProvider } from '@/components/JotaiProvider';
 import { Toaster } from '@/components/ui/sonner';
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             <JotaiProvider>
               <Toaster />
               <Modals />
+              <Analytics />
               {children}
             </JotaiProvider>
           </ConvexClientProvider>
