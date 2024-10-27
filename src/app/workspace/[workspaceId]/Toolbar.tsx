@@ -14,14 +14,13 @@ import { useGetChannels } from '@/features/channels/api/useGetChannels';
 import { useGetMembers } from '@/features/members/api/useGetMembers';
 import { useGetWorkspace } from '@/features/workspaces/api/useGetWorkspace';
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
-import { Info, Search } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { Headphones, Search, Video } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 const Toolbar = () => {
   const router = useRouter();
-
+  const searchParams = useSearchParams();
   const workspaceId = useWorkspaceId();
 
   const [open, setOpen] = useState(false);
@@ -38,6 +37,32 @@ const Toolbar = () => {
   const onMemberClick = (memberId: string) => {
     setOpen(false);
     router.push(`/workspace/${workspaceId}/member/${memberId}`);
+  };
+
+  const handleVideoCall = () => {
+    const currentParams = new URLSearchParams(searchParams?.toString());
+    currentParams.delete('call');
+
+    if (currentParams.has('videoCall')) {
+      currentParams.delete('videoCall');
+    } else {
+      currentParams.append('videoCall', 'true');
+    }
+
+    router.push(`?${currentParams.toString()}`);
+  };
+
+  const handleCall = () => {
+    const currentParams = new URLSearchParams(searchParams?.toString());
+    currentParams.delete('videoCall');
+
+    if (currentParams.has('call')) {
+      currentParams.delete('call');
+    } else {
+      currentParams.append('call', 'true');
+    }
+
+    router.push(`?${currentParams.toString()}`);
   };
 
   return (
@@ -83,9 +108,17 @@ const Toolbar = () => {
         </CommandDialog>
       </div>
 
-      <div className="ml-auto flex-1 flex items-center justify-end">
-        <Button variant={'transparent'} size={'iconSm'}>
-          <Info className="size-5 text-white" />
+      <div className="ml-auto flex-1 flex items-center justify-end gap-x-2">
+        <Button variant={'transparent'} size={'iconSm'} onClick={handleCall}>
+          <Headphones className="size-5 text-white" />
+        </Button>
+
+        <Button
+          variant={'transparent'}
+          size={'iconSm'}
+          onClick={handleVideoCall}
+        >
+          <Video className="size-5 text-white" />
         </Button>
       </div>
     </nav>
