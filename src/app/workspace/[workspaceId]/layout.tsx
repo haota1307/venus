@@ -39,9 +39,11 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
             defaultSize={20}
             minSize={11}
             maxSize={80}
-            className="bg-fuchsia-900/95"
+            className="bg-fuchsia-900"
           >
-            <WorkspaceSidebar />
+            <div className="bg-fuchsia-800 rounded-tl-xl h-full">
+              <WorkspaceSidebar />
+            </div>
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={80} minSize={20}>

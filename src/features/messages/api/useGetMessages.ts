@@ -1,6 +1,7 @@
 import { usePaginatedQuery } from 'convex/react';
 import { Id } from '../../../../convex/_generated/dataModel';
 import { api } from '../../../../convex/_generated/api';
+import { redirect } from 'next/navigation';
 
 const BATCH_SIZE = 20;
 
@@ -10,17 +11,26 @@ interface UseGetMessagesProps {
   parentMessageId?: Id<'messages'>;
 }
 
-export type GetMessagesReturnType = (typeof api.messages.get._returnType)['page'];
+export type GetMessagesReturnType =
+  (typeof api.messages.get._returnType)['page'];
 
-export const useGetMessages = ({ channelId, conversationId, parentMessageId }: UseGetMessagesProps) => {
-  const { results, status, loadMore } = usePaginatedQuery(
-    api.messages.get,
-    { channelId, conversationId, parentMessageId },
-    { initialNumItems: BATCH_SIZE }
-  );
-  return {
-    results,
-    status,
-    loadMore: () => loadMore(BATCH_SIZE),
-  };
+export const useGetMessages = ({
+  channelId,
+  conversationId,
+  parentMessageId,
+}: UseGetMessagesProps) => {
+  try {
+    const { results, status, loadMore } = usePaginatedQuery(
+      api.messages.get,
+      { channelId, conversationId, parentMessageId },
+      { initialNumItems: BATCH_SIZE }
+    );
+    return {
+      results,
+      status,
+      loadMore: () => loadMore(BATCH_SIZE),
+    };
+  } catch (error) {
+    redirect('/');
+  }
 };
