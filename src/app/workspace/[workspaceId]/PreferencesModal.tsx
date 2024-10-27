@@ -26,14 +26,23 @@ interface PreferencesProps {
   initialValue: string;
 }
 
-const PreferencesModal = ({ initialValue, open, setOpen }: PreferencesProps) => {
+const PreferencesModal = ({
+  initialValue,
+  open,
+  setOpen,
+}: PreferencesProps) => {
   const workspaceId = useWorkspaceId();
   const router = useRouter();
 
-  const [ConfirmDialog, beforeRemove] = useConfirm('Bạn có chắc không?', 'Hành động này không thể hoàn tác.');
+  const [ConfirmDialog, beforeRemove] = useConfirm(
+    'Bạn có chắc không?',
+    'Hành động này không thể hoàn tác.'
+  );
 
-  const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } = useUpdateWorkspace();
-  const { mutate: removeWorkspace, isPending: isRemovingWorkspace } = useRemoveWorkspace();
+  const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } =
+    useUpdateWorkspace();
+  const { mutate: removeWorkspace, isPending: isRemovingWorkspace } =
+    useRemoveWorkspace();
 
   const [value, setValue] = useState(initialValue);
   const [editOpen, setEditOpen] = useState(false);
@@ -77,18 +86,20 @@ const PreferencesModal = ({ initialValue, open, setOpen }: PreferencesProps) => 
     <>
       <ConfirmDialog />
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="p-0 bg-gray-50 overflow-hidden">
-          <DialogHeader className="p-4 border-b bg-white">
+        <DialogContent className="p-0 overflow-hidden">
+          <DialogHeader className="p-4 border-b">
             <DialogTitle>{initialValue}</DialogTitle>
           </DialogHeader>
 
           <div className="px-4 pb-4 flex flex-col gap-y-2">
             <Dialog open={editOpen} onOpenChange={setEditOpen}>
               <DialogTrigger asChild>
-                <div className="px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50">
+                <div className="px-5 py-4 rounded-lg border cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold">Tên workspace</p>
-                    <p className="text-sm text-indigo-500 hover:underline font-semibold">Chỉnh sửa</p>
+                    <p className="text-sm text-indigo-500 hover:underline font-semibold">
+                      Chỉnh sửa
+                    </p>
                   </div>
                   <p className="text-sm">{initialValue}</p>
                 </div>
@@ -123,8 +134,9 @@ const PreferencesModal = ({ initialValue, open, setOpen }: PreferencesProps) => 
 
             <Button
               disabled={isRemovingWorkspace}
+              variant={'destructive'}
               onClick={handleRemove}
-              className="flex items-center justify-start gap-x-2 px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50 text-rose-500"
+              className="flex items-center justify-start gap-x-2 px-5 py-4 rounded-lg border cursor-pointer"
             >
               <TrashIcon className="size-4" />
               <p className="text-sm font-bold">Xóa workspace</p>

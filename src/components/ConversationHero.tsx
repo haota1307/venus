@@ -5,7 +5,10 @@ interface ConversationHeroProps {
   image?: string;
 }
 
-const ConversationHero = ({ image, name = 'Member' }: ConversationHeroProps) => {
+const ConversationHero = ({
+  image,
+  name = 'Member',
+}: ConversationHeroProps) => {
   const avatarFallback = name?.charAt(0).toUpperCase();
 
   return (
@@ -19,7 +22,7 @@ const ConversationHero = ({ image, name = 'Member' }: ConversationHeroProps) => 
         </Avatar>
       </div>
       <p className="text-2xl font-bold">{name}</p>
-      <p className="font-normal text-slate-800 mb-4">
+      <p className="font-normal text-slate-800 dark:text-slate-200 mb-4">
         Đây là cuộc trò chuyện riêng tư giữa bạn và <strong>{name}</strong>
       </p>
     </div>

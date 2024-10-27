@@ -28,7 +28,6 @@ export const useGetMessages = ({
     { initialNumItems: BATCH_SIZE }
   );
 
-  // Chuyển hướng nếu không có dữ liệu hợp lệ (hoặc một lỗi nào đó xảy ra)
   useEffect(() => {
     if (!results) {
       router.push('/');

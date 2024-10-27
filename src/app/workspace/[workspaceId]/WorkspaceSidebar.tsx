@@ -65,7 +65,7 @@ const WorkspaceSidebar = () => {
         workspace={workspace}
         isAdmin={member.role === 'admin'}
       />
-      <div className="flex flex-col px-2 mt-3">
+      <div className="flex flex-col px-2 mt-3 ">
         <SidebarItem label="Chủ đề" icon={MessageSquareText} id="threads" />
         <SidebarItem label="Bản nháp & gửi" icon={SendHorizonal} id="drafts" />
       </div>

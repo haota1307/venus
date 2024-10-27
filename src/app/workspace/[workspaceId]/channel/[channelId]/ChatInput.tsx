@@ -37,7 +37,13 @@ const ChatInput = ({ placeholder }: ChatInputProps) => {
   const { mutate: generateUploadUrl } = useGenerateUploadUrl();
   const { mutate: createMessage } = useCreateMessage();
 
-  const handleSubmit = async ({ body, image }: { body: string; image: File | null }) => {
+  const handleSubmit = async ({
+    body,
+    image,
+  }: {
+    body: string;
+    image: File | null;
+  }) => {
     try {
       setIspending(true);
       editorRef?.current?.enable(false);

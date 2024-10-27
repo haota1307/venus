@@ -37,12 +37,12 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
         setOpen={setPreferencesOpen}
         initialValue={workspace.name}
       />
-      <div className="flex items-center justify-between px-4 h-[49px] gap-0.5 bg-in">
+      <div className="flex items-center justify-between px-4 h-[49px] gap-0.5 bg-inherit ">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant={'transparent'}
-              className="font-semibold text-lg w-auto p-1.5 overflow-hidden"
+              className="font-semibold text-lg w-auto p-1.5 overflow-hidden dark:text-slate-100"
               size={'sm'}
             >
               <span className="truncate">{workspace.name}</span>
@@ -89,16 +89,16 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-0.5 ">
           <Hint label="Lọc cuộc trò chuyện" side="bottom">
             <Button variant={'transparent'} size={'iconSm'}>
-              <ListFilter className="size-4" />
+              <ListFilter className="size-4 dark:text-slate-100" />
             </Button>
           </Hint>
 
           <Hint label="Tin nhắn mới" side="bottom">
             <Button variant={'transparent'} size={'iconSm'}>
-              <SquarePen className="size-4" />
+              <SquarePen className="size-4 dark:text-slate-100" />
             </Button>
           </Hint>
         </div>

@@ -66,14 +66,14 @@ const Toolbar = () => {
   };
 
   return (
-    <nav className="bg-fuchsia-900 flex items-center justify-between h-10 p-1.5 w-full">
+    <nav className="bg-fuchsia-900 dark:bg-primary-foreground flex items-center justify-between h-10 p-1.5 w-full">
       <div className="flex-1" />
 
       <div className="w-[280px] grow-[2] shrink">
         <Button
           size={'sm'}
           onClick={() => setOpen(true)}
-          className="bg-accent/25 hover:bg-accent-25 w-full justify-start h-7 px-2 shadow-lg"
+          className="bg-accent/25 hover:bg-accent-25 dark:bg-slate-800/30 w-full justify-start h-7 px-2 shadow-lg"
         >
           <Search className="size-4 text-white mr-2" />
           <span className="text-white text-xs">Tìm kiếm {data?.name}</span>

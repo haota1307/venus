@@ -65,7 +65,7 @@ const WorkspaceIdPage = () => {
 
   if (!workspace || !member) {
     return (
-      <div className="h-full flex-1 flex items-center justify-center flex-col gap-2">
+      <div className="h-full flex-1 flex items-center justify-center flex-col gap-2 dark:bg-slate-800/60">
         <TriangleAlert className="size-6 text-muted-foreground" />
         <span className="text-sm text-muted-foreground">
           Workspace không tồn tại
@@ -75,7 +75,7 @@ const WorkspaceIdPage = () => {
   }
 
   return (
-    <div className="h-full flex-1 flex items-center justify-center flex-col gap-2">
+    <div className="h-full flex-1 flex items-center justify-center flex-col gap-2 dark:bg-slate-800/60">
       <TriangleAlert className="size-6 text-muted-foreground" />
       <span className="text-sm text-muted-foreground">
         Kênh chat không tồn tại

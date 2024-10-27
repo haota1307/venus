@@ -188,7 +188,7 @@ const Editor = ({
           disable && 'opacity-50'
         )}
       >
-        <div ref={containerRef} className="h-full ql-custom" />
+        <div ref={containerRef} className={cn('h-full ql-custom')} />
 
         {!!image && (
           <div className="p-2">
@@ -214,7 +214,7 @@ const Editor = ({
           </div>
         )}
 
-        <div className="flex px-2 pb-2">
+        <div className="flex px-2 pb-2 dark:bg-slate-900/[0.99]">
           <Hint
             label={
               isToolbarVisible ? 'Mở thanh định dạng' : 'Ẩn thanh định dạng'

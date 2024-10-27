@@ -43,8 +43,10 @@ const Header = ({ title }: HeaderProp) => {
 
   const { data: member } = useCurrentMember({ workspaceId });
 
-  const { mutate: updateChannel, isPending: isUpdatingChannel } = useUpdateChannel();
-  const { mutate: removeChannel, isPending: isRemovingChannel } = useRemoveChannel();
+  const { mutate: updateChannel, isPending: isUpdatingChannel } =
+    useUpdateChannel();
+  const { mutate: removeChannel, isPending: isRemovingChannel } =
+    useRemoveChannel();
 
   const handleOpen = (value: boolean) => {
     if (member?.role !== 'admin') return;
@@ -91,11 +93,15 @@ const Header = ({ title }: HeaderProp) => {
   };
 
   return (
-    <div className="bg-white border-b h-[49px] flex items-center px-4 overflow-hidden">
+    <div className="bg-white dark:bg-slate-800/60 border-b h-[49px] flex items-center px-4 overflow-hidden">
       <ConfirmDialog />
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="ghost" className="text-lg font-semibold px-2 overflow-hidden w-auto" size="sm">
+          <Button
+            variant="ghost"
+            className="text-lg font-semibold px-2 overflow-hidden w-auto"
+            size="sm"
+          >
             <span className="truncate"># {title}</span>
             <FaChevronDown className="size-2.5 ml-2" />
           </Button>
@@ -111,7 +117,9 @@ const Header = ({ title }: HeaderProp) => {
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold">Tên kênh</p>
                     {member?.role === 'admin' && (
-                      <p className="text-sm text-indigo-500 hover:underline font-semibold">Sửa</p>
+                      <p className="text-sm text-indigo-500 hover:underline font-semibold">
+                        Sửa
+                      </p>
                     )}
                   </div>
                   <p className="text-sm"># {title}</p>

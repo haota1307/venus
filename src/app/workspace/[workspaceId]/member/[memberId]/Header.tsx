@@ -8,11 +8,15 @@ interface HeaderProp {
   onClick?: () => void;
 }
 
-const Header = ({ memberImage, memberName = 'Member', onClick }: HeaderProp) => {
+const Header = ({
+  memberImage,
+  memberName = 'Member',
+  onClick,
+}: HeaderProp) => {
   const avatarFallback = memberName.charAt(0).toLocaleUpperCase();
 
   return (
-    <div className="bg-white border-b h-[49px] flex items-center px-4 overflow-hidden">
+    <div className="bg-white dark:bg-slate-800/60 border-b h-[49px] flex items-center px-4 overflow-hidden">
       <Button
         variant={'ghost'}
         className="text-lg font-semibold px-2 overflow-hidden w-auto"

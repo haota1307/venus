@@ -36,13 +36,11 @@ const ChannelIdPage = () => {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Hiển thị loader nếu đang tải */}
       {isLoading ? (
         <div className="h-full flex-1 flex items-center justify-center">
           <Loader className="size-5 text-muted-foreground animate-spin" />
         </div>
       ) : !channel ? (
-        // Hiển thị thông báo nếu không tìm thấy kênh
         <div className="h-full flex flex-1 flex-col items-center justify-center">
           <TriangleAlert className="size-5 text-muted-foreground " />
           <p className="text-sm text-muted-foreground">
@@ -50,7 +48,6 @@ const ChannelIdPage = () => {
           </p>
         </div>
       ) : (
-        // Nội dung chính khi đã tải xong
         <>
           {!isVideoCall && !isCall && (
             <>

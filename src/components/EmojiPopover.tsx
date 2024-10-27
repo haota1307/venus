@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import EmojiPicker, { type EmojiClickData } from 'emoji-picker-react';
+import EmojiPicker, { Theme, type EmojiClickData } from 'emoji-picker-react';
 
 import {
   Popover,
@@ -52,7 +52,7 @@ export const EmojiPopover = ({
           </TooltipContent>
         </Tooltip>
         <PopoverContent className="p-0 w-full border-none shadow-none">
-          <EmojiPicker onEmojiClick={onSelect} />
+          <EmojiPicker theme={Theme.AUTO} onEmojiClick={onSelect} />
         </PopoverContent>
       </Popover>
     </TooltipProvider>

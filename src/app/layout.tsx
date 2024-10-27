@@ -8,6 +8,7 @@ import Modals from '@/components/Modal';
 import { JotaiProvider } from '@/components/JotaiProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { Analytics } from '@vercel/analytics/react';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,10 +28,17 @@ export default function RootLayout({
         <body className={inter.className}>
           <ConvexClientProvider>
             <JotaiProvider>
-              <Toaster />
-              <Modals />
-              <Analytics />
-              {children}
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Toaster />
+                <Modals />
+                <Analytics />
+                {children}
+              </ThemeProvider>
             </JotaiProvider>
           </ConvexClientProvider>
         </body>

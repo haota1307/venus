@@ -43,7 +43,12 @@ const Renderer = ({ value }: RendererProps) => {
 
   if (isEmpty) return null;
 
-  return <div ref={rendererRef} className="ql-editor ql-renderer max-w-screen-md" />;
+  return (
+    <div
+      ref={rendererRef}
+      className="ql-editor ql-renderer max-w-screen-md dark:!bg-slate-800/[0.01]"
+    />
+  );
 };
 
 export default Renderer;

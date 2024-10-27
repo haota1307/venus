@@ -140,8 +140,9 @@ const Message = ({
         <ConfirmDialog />
         <div
           className={cn(
-            'flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative',
-            isEditing && 'bg-yellow-100 hover:bg-yellow-100',
+            'flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 dark:hover:bg-slate-800 group relative',
+            isEditing &&
+              'bg-yellow-100 hover:bg-yellow-100 dark:bg-slate-700 dark:hover:bg-slate-800',
             isRemovingMessage &&
               'transform transition-all scale-y-0 origin-bottom duration-200'
           )}
@@ -208,8 +209,9 @@ const Message = ({
       <ConfirmDialog />
       <div
         className={cn(
-          'flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative',
-          isEditing && 'bg-yellow-100/70 hover:bg-yellow-100/70',
+          'flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 dark:hover:bg-slate-800 group relative',
+          isEditing &&
+            'bg-yellow-100/70 hover:bg-yellow-100/70 dark:hover:bg-slate-800',
           isRemovingMessage &&
             'bg-rose-100 transform transition-all scale-y-0 origin-bottom duration-200'
         )}

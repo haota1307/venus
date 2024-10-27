@@ -149,6 +149,28 @@ body,
   content: none !important; /* Ẩn nội dung ::before */
 }
 
+.dark .ql-toolbar {
+  background-color: rgb(15 23 42) !important;
+  border-color: #333 !important;
+}
+
+.dark .ql-container {
+  color: #e0e0e0 !important;
+}
+
+.dark .ql-editor {
+  background-color: rgb(15 23 42 / 0.99) !important;
+  color: #e0e0e0 !important;
+}
+
+.dark .ql-editor a {
+  color: #66afe9 !important;
+}
+
+.dark .ql-editor:before {
+  color: #888 !important;
+}
+
 .messages-scrollbar::-webkit-scrollbar {
   width: 4px;
 }

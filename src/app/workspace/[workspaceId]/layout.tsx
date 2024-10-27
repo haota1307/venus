@@ -39,21 +39,29 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
             defaultSize={20}
             minSize={11}
             maxSize={80}
-            className="bg-fuchsia-900"
+            className="bg-fuchsia-900 dark:bg-primary-foreground"
           >
-            <div className="bg-fuchsia-800 rounded-l-2xl h-full">
+            <div className="bg-fuchsia-800 dark:bg-slate-800/30  rounded-l-2xl h-full">
               <WorkspaceSidebar />
             </div>
           </ResizablePanel>
           <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={80} minSize={20}>
+          <ResizablePanel
+            defaultSize={80}
+            minSize={20}
+            className="dark:bg-slate-800/60"
+          >
             {children}
           </ResizablePanel>
 
           {showPanel && (
             <>
               <ResizableHandle withHandle />
-              <ResizablePanel minSize={20} defaultSize={30}>
+              <ResizablePanel
+                minSize={20}
+                defaultSize={30}
+                className="dark:bg-slate-800/60"
+              >
                 {parentMessageId ? (
                   <Thread
                     messageId={parentMessageId as Id<'messages'>}

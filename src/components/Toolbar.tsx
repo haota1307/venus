@@ -26,7 +26,7 @@ export const Toolbar = ({
 }: ToolbarProps) => {
   return (
     <div className="absolute top-1 right-5">
-      <div className="group-hover:opacity-100 opacity-0 transition-opacity border bg-white rounded-md shadow-sm">
+      <div className="group-hover:opacity-100 opacity-0 transition-opacity border bg-white dark:bg-slate-900 rounded-md shadow-sm">
         <EmojiPopover
           hint="Thả cảm xúc"
           onEmojiSelect={(emoji) => handleReaction(emoji)}
