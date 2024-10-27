@@ -16,15 +16,14 @@ import { useEffect, useState } from 'react';
 const ChannelIdPage = () => {
   const searchParams = useSearchParams();
   const channelId = useChannelId();
-
   const [isVideoCall, setIsVideoCall] = useState(false);
   const [isCall, setIsCall] = useState(false);
 
   useEffect(() => {
     const videoCallParams = searchParams?.get('videoCall');
-    const callParams = searchParams?.get('call'); // Thêm params call
+    const callParams = searchParams?.get('call');
     setIsVideoCall(videoCallParams === 'true');
-    setIsCall(callParams === 'true'); // Cập nhật trạng thái isCall
+    setIsCall(callParams === 'true');
   }, [searchParams, channelId]);
 
   const { results, loadMore, status } = useGetMessages({ channelId });
@@ -33,42 +32,44 @@ const ChannelIdPage = () => {
     id: channelId,
   });
 
-  if (channelLoading || status === 'LoadingFirstPage') {
-    return (
-      <div className="h-full flex-1 flex items-center justify-center">
-        <Loader className="size-5 text-muted-foreground animate-spin" />
-      </div>
-    );
-  }
-
-  if (!channel) {
-    return (
-      <div className="h-full flex flex-1 flex-col items-center justify-center">
-        <TriangleAlert className="size-5 text-muted-foreground " />
-        <p className="text-sm text-muted-foreground">Kênh chat không tồn tại</p>
-      </div>
-    );
-  }
+  const isLoading = channelLoading || status === 'LoadingFirstPage';
 
   return (
     <div className="flex flex-col h-full">
-      {!isVideoCall &&
-        !isCall && ( // Cập nhật điều kiện hiển thị
-          <>
-            <Header title={channel.name} />
-            <MessageList
-              channelName={channel.name}
-              channelCreationTime={channel._creationTime}
-              data={results}
-              loadMore={loadMore}
-              isLoadingMore={status === 'LoadingMore'}
-              canLoadMore={status === 'CanLoadMore'}
-            />
-            <ChatInput placeholder={`Gừi tin nhắn đến #${channel.name}`} />
-          </>
-        )}
-      {isVideoCall && <VideoChat channelId={channelId} user={user} />}
-      {isCall && <Call channelId={channelId} user={user} />}
+      {/* Hiển thị loader nếu đang tải */}
+      {isLoading ? (
+        <div className="h-full flex-1 flex items-center justify-center">
+          <Loader className="size-5 text-muted-foreground animate-spin" />
+        </div>
+      ) : !channel ? (
+        // Hiển thị thông báo nếu không tìm thấy kênh
+        <div className="h-full flex flex-1 flex-col items-center justify-center">
+          <TriangleAlert className="size-5 text-muted-foreground " />
+          <p className="text-sm text-muted-foreground">
+            Kênh chat không tồn tại
+          </p>
+        </div>
+      ) : (
+        // Nội dung chính khi đã tải xong
+        <>
+          {!isVideoCall && !isCall && (
+            <>
+              <Header title={channel.name} />
+              <MessageList
+                channelName={channel.name}
+                channelCreationTime={channel._creationTime}
+                data={results}
+                loadMore={loadMore}
+                isLoadingMore={status === 'LoadingMore'}
+                canLoadMore={status === 'CanLoadMore'}
+              />
+              <ChatInput placeholder={`Gửi tin nhắn đến #${channel.name}`} />
+            </>
+          )}
+          {isVideoCall && <VideoChat channelId={channelId} user={user} />}
+          {isCall && <Call channelId={channelId} user={user} />}
+        </>
+      )}
     </div>
   );
 };
