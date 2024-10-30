@@ -93,7 +93,7 @@ const Header = ({ title }: HeaderProp) => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800/60 border-b h-[49px] flex items-center px-4 overflow-hidden">
+    <div className="border-b h-[49px] flex items-center px-4 overflow-hidden">
       <ConfirmDialog />
       <Dialog>
         <DialogTrigger asChild>
@@ -106,14 +106,14 @@ const Header = ({ title }: HeaderProp) => {
             <FaChevronDown className="size-2.5 ml-2" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="p-0 bg-gray-50 overflow-hidden">
-          <DialogHeader className="p-4 border-b bg-white">
+        <DialogContent className="p-0  overflow-hidden">
+          <DialogHeader className="p-4 border-b">
             <DialogTitle># {title}</DialogTitle>
           </DialogHeader>
           <div className="px-4 pb-4 flex flex-col gap-y-2">
             <Dialog open={editOpen} onOpenChange={handleOpen}>
               <DialogTrigger asChild>
-                <div className="px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50">
+                <div className="px-5 py-4 rounded-lg border cursor-pointer hover:bg-slate-900">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold">Tên kênh</p>
                     {member?.role === 'admin' && (
@@ -141,7 +141,10 @@ const Header = ({ title }: HeaderProp) => {
                   />
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button variant="outline" disabled={isUpdatingChannel}>
+                      <Button
+                        variant="destructive"
+                        disabled={isUpdatingChannel}
+                      >
                         Hủy
                       </Button>
                     </DialogClose>
@@ -153,14 +156,15 @@ const Header = ({ title }: HeaderProp) => {
               </DialogContent>
             </Dialog>
             {member?.role === 'admin' && (
-              <button
+              <Button
+                variant={'destructive'}
                 onClick={handleRemove}
                 disabled={isRemovingChannel}
-                className="flex items-center gap-x-2 px-5 py-4 bg-white rounded-lg cursor-pointer border hover:bg-gray-50  text-rose-600"
+                className="flex justify-start gap-x-2 px-5 py-4 rounded-lg cursor-pointer border"
               >
                 <TrashIcon className="size-4" />
                 <p className="text-sm font-semibold">Xóa kênh</p>
-              </button>
+              </Button>
             )}
           </div>
         </DialogContent>

@@ -5,7 +5,13 @@ import { TriangleAlert } from 'lucide-react';
 import { useAuthActions } from '@convex-dev/auth/react';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { AuthFlow } from '@/features/auth/types';
@@ -47,7 +53,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
         <CardTitle>Đăng nhập để tiếp tục</CardTitle>
-        <CardDescription>Sử dụng email của bạn hoặc dịch vụ khác để tiếp tục</CardDescription>
+        <CardDescription>Chọn cách đăng nhập của bạn</CardDescription>
       </CardHeader>
       {!!error && (
         <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
@@ -56,7 +62,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         </div>
       )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5" onSubmit={onPasswordSignIn}>
+        {/* <form className="space-y-2.5" onSubmit={onPasswordSignIn}>
           <Input
             disabled={pending}
             value={email}
@@ -77,7 +83,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
             Tiếp tục
           </Button>
         </form>
-        <Separator className="w-full" />
+        <Separator className="w-full" /> */}
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={pending}
@@ -100,12 +106,15 @@ const SignInCard = ({ setState }: SignInCardProps) => {
             Tiếp tục với Github
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground">
+        {/* <p className="text-xs text-muted-foreground">
           Bạn chưa có tài khoản?
-          <span onClick={() => setState('signUp')} className="text-fuchsia-700 hover:underline cursor-pointer pl-1">
+          <span
+            onClick={() => setState('signUp')}
+            className="text-fuchsia-700 hover:underline cursor-pointer pl-1"
+          >
             Đăng ký
           </span>
-        </p>
+        </p> */}
       </CardContent>
     </Card>
   );

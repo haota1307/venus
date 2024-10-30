@@ -9,7 +9,7 @@ export const checkEmailExists = query({
     const existingUser = await ctx.db
       .query('users')
       .withIndex('email', (q) => q.eq('email', args.email))
-      .unique();
+      .first();
 
     return !!existingUser;
   },

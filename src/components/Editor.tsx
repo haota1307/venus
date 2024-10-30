@@ -52,6 +52,7 @@ const Editor = ({
 }: EditorProps) => {
   const [text, setText] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null); // Trạng thái mới cho các tệp không phải hình ảnh
   const [isToolbarVisible, setIsToolbarVisible] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -92,17 +93,17 @@ const Editor = ({
               key: 'Enter',
               handler: () => {
                 const text = quill.getText();
-                const addedImage = imageElementRef.current?.files?.[0] || null;
+                const addedFile = imageElementRef.current?.files?.[0] || null;
 
                 const isEmpty =
-                  !addedImage &&
+                  !addedFile &&
                   text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
                 if (isEmpty) return;
 
                 const body = JSON.stringify(quill.getContents());
 
-                submitRef.current?.({ image: addedImage, body });
+                submitRef.current?.({ image: addedFile, body });
               },
             },
             shift_enter: {
@@ -132,7 +133,7 @@ const Editor = ({
       setText(quill.getText());
     });
 
-    const saveButton = document.querySelector('.ql-action') as HTMLElement; // Ép kiểu thành HTMLElement
+    const saveButton = document.querySelector('.ql-action') as HTMLElement;
     if (saveButton) {
       saveButton.textContent = 'Lưu';
       saveButton.style.paddingLeft = '10px';
@@ -170,15 +171,27 @@ const Editor = ({
     quill?.insertText(quill.getSelection()?.index || 0, emojiValue);
   };
 
-  const isEmpty = !image && text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+  const isEmpty =
+    !image && !file && text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
   return (
     <div className="flex flex-col">
       <input
         type="file"
-        accept="image/*"
+        accept="image/*,video/*,.pdf,.doc,.docx"
         ref={imageElementRef}
-        onChange={(event) => setImage(event.target.files![0])}
+        onChange={(event) => {
+          const selectedFile = event.target.files?.[0];
+          if (!selectedFile) return;
+
+          if (selectedFile.type.startsWith('image/')) {
+            setImage(selectedFile);
+            setFile(null); // Đặt lại trạng thái tệp nếu tệp hình ảnh được chọn
+          } else {
+            setFile(selectedFile);
+            setImage(null); // Đặt lại hình ảnh nếu tệp không phải hình ảnh được chọn
+          }
+        }}
         className="hidden"
       />
 
@@ -211,6 +224,23 @@ const Editor = ({
                 className="rounded-xl overflow-hidden border object-cover"
               />
             </div>
+          </div>
+        )}
+
+        {!!file && (
+          <div className="p-2 flex items-center">
+            <Hint label="Bỏ chọn tệp">
+              <button
+                onClick={() => {
+                  setFile(null);
+                  imageElementRef.current!.value = '';
+                }}
+                className="rounded-full bg-black/70 hover:bg-black text-white size-6 border-2 border-white p-1 mr-2"
+              >
+                <XIcon className="size-3.5" />
+              </button>
+            </Hint>
+            <p className="text-sm">{file.name}</p>
           </div>
         )}
 
@@ -258,67 +288,22 @@ const Editor = ({
                     ? 'bg-white hover:bg-white text-muted-foreground'
                     : 'bg-green-600 hover:bg-green-600/80 text-white'
                 )}
-                disabled={disable || isEmpty}
-                size={'iconSm'}
+                disabled={isEmpty}
                 onClick={() => {
-                  onSubmit({
-                    body: JSON.stringify(quillRef.current?.getContents()),
-                    image,
-                  });
+                  const addedFile = imageElementRef.current?.files?.[0] || null;
+                  const body = JSON.stringify(quillRef.current?.getContents());
+
+                  submitRef.current?.({ image: addedFile, body });
                 }}
               >
                 <SendHorizonal className="size-4" />
               </Button>
             </Hint>
           )}
-
-          {variant === 'update' && (
-            <div className="ml-auto flex items-center gap-x-2">
-              <Button
-                variant={'secondary'}
-                size={'sm'}
-                onClick={onCancel}
-                disabled={false}
-              >
-                Huỷ
-              </Button>
-              <Button
-                variant={'secondary'}
-                size={'sm'}
-                onClick={() => {
-                  onSubmit({
-                    body: JSON.stringify(quillRef.current?.getContents()),
-                    image,
-                  });
-                }}
-                disabled={disable || isEmpty}
-                className={cn('bg-green-600 hover:bg-green-600/80 text-white')}
-              >
-                Lưu
-              </Button>
-            </div>
-          )}
         </div>
+
+        <Separator />
       </div>
-
-      {variant === 'create' && (
-        <div
-          className={cn(
-            'p-1 text-[10px] text-muted-foreground flex justify-end items-center opacity-0 transition',
-            !isEmpty && 'opacity-100'
-          )}
-        >
-          <>
-            <p>
-              <strong>Enter</strong> để gửi
-            </p>
-            <Separator orientation="vertical" className="mx-2 h-3" />
-            <p>
-              <strong>Shift + Enter</strong> để xuống hàng
-            </p>
-          </>
-        </div>
-      )}
     </div>
   );
 };
