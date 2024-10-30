@@ -175,6 +175,7 @@ export const getById = query({
       image: message.image
         ? await ctx.storage.getUrl(message.image)
         : undefined,
+      type: message.image ? await ctx.db.system.get(message.image) : undefined,
       user,
       member,
       reactions: reactionsWithoutMemberIdProperty,
@@ -269,6 +270,9 @@ export const get = query({
             return {
               ...message,
               image,
+              type: message.image
+                ? await ctx.db.system.get(message.image)
+                : undefined,
               member,
               user,
               reactions: reactionsWithoutMemberIdProperty,

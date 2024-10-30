@@ -41,6 +41,16 @@ interface MessageProps {
   >;
   body: Doc<'messages'>['body'];
   image: string | null | undefined;
+  type:
+    | {
+        _id: Id<'_storage'>;
+        _creationTime: number;
+        contentType?: string | undefined | undefined;
+        sha256: string;
+        size: number;
+      }
+    | null
+    | undefined;
   createdAt: Doc<'messages'>['_creationTime'];
   updatedAt: Doc<'messages'>['updatedAt'];
   isEditing: boolean;
@@ -62,6 +72,7 @@ const Message = ({
   reactions,
   body,
   image,
+  type,
   createdAt,
   updatedAt,
   isEditing,
@@ -168,7 +179,7 @@ const Message = ({
                 <div className="flex-1 w-6" />
 
                 <Renderer value={body} />
-                <Thumbnail url={image} />
+                <Thumbnail url={image} type={type} />
 
                 {updatedAt && (
                   <span className="text-xs text-muted-foreground">
@@ -253,7 +264,7 @@ const Message = ({
               <div className="flex flex-col w-full">
                 <Renderer value={body} />
 
-                <Thumbnail url={image} />
+                <Thumbnail url={image} type={type} />
 
                 {updatedAt && (
                   <span className="text-xs text-muted-foreground">

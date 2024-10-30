@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import {
   ALargeSmall,
+  FilePlus2,
   ImagePlusIcon,
   SendHorizonal,
   Smile,
@@ -267,14 +268,14 @@ const Editor = ({
           </EmojiPopover>
 
           {variant === 'create' && (
-            <Hint label="Hình ảnh">
+            <Hint label="Hình ảnh, video, file PDF.">
               <Button
                 disabled={false}
                 size={'iconSm'}
                 variant={'ghost'}
                 onClick={() => imageElementRef.current?.click()}
               >
-                <ImagePlusIcon className="size-4" />
+                <FilePlus2 className="size-4" />
               </Button>
             </Hint>
           )}
@@ -301,9 +302,25 @@ const Editor = ({
             </Hint>
           )}
         </div>
-
-        <Separator />
       </div>
+      {variant === 'create' && (
+        <div
+          className={cn(
+            'p-1 text-[10px] text-muted-foreground flex justify-end items-center opacity-0 transition',
+            !isEmpty && 'opacity-100'
+          )}
+        >
+          <>
+            <p>
+              <strong>Enter</strong> để gửi
+            </p>
+            <Separator orientation="vertical" className="mx-2 h-3" />
+            <p>
+              <strong>Shift + Enter</strong> để xuống hàng
+            </p>
+          </>
+        </div>
+      )}
     </div>
   );
 };
