@@ -208,6 +208,7 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
                   key={message._id}
                   id={message._id}
                   memberId={message.memberId}
+                  type={message.type}
                   authorImage={message.user.image}
                   authorName={message.user.name}
                   isAuthor={message.memberId === currentMember?._id}
@@ -260,6 +261,7 @@ const Thread = ({ messageId, onClose }: ThreadProps) => {
         <Message
           hideThreadButton
           memberId={message.memberId}
+          type={message.type}
           authorImage={message.user.image}
           authorName={message.user.name}
           isAuthor={message.memberId === currentMember?._id}
