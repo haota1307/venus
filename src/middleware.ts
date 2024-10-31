@@ -5,18 +5,22 @@ import {
   nextjsMiddlewareRedirect,
 } from '@convex-dev/auth/nextjs/server';
 
-const isPublicPage = createRouteMatcher(['/auth']);
+const isPublicPage = createRouteMatcher(['/auth', '/']);
 
 export default convexAuthNextjsMiddleware((request) => {
+  if (request.nextUrl.pathname === '/') {
+    return;
+  }
+
   if (!isPublicPage(request) && !isAuthenticatedNextjs()) {
     return nextjsMiddlewareRedirect(request, '/auth');
   }
 
   if (isPublicPage(request) && isAuthenticatedNextjs()) {
-    return nextjsMiddlewareRedirect(request, '/');
+    return nextjsMiddlewareRedirect(request, '/setup');
   }
 });
 
 export const config = {
-  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!.*\\..*|_next).*)', '/(api|trpc)(.*)'],
 };

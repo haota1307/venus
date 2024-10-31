@@ -6,7 +6,7 @@ import { useGetWorkspaces } from '@/features/workspaces/api/useGetWorkspaces';
 import { useCreateWorkspaceModal } from '@/features/workspaces/store/useCreateWorkspaceModal';
 import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function Setup() {
   const router = useRouter();
   const [open, setOpen] = useCreateWorkspaceModal();
 

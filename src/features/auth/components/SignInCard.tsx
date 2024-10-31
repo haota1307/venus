@@ -44,7 +44,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
 
   const onProviderSignIn = (value: 'github' | 'google') => {
     setPending(true);
-    signIn(value, { redirectTo: '/' }).finally(() => {
+    signIn(value, { redirectTo: '/setup' }).finally(() => {
       setPending(false);
     });
   };

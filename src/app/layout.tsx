@@ -30,7 +30,7 @@ export default function RootLayout({
             <JotaiProvider>
               <ThemeProvider
                 attribute="class"
-                defaultTheme="system"
+                defaultTheme="light"
                 enableSystem
                 disableTransitionOnChange
               >

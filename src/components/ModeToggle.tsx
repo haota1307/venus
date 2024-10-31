@@ -1,5 +1,7 @@
+'use client';
+
 import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
+import { Laptop, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
@@ -17,23 +19,26 @@ export function ModeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="transparent"
+          variant="outline"
           size="icon"
-          className="dark:bg-gray-800 dark:text-white"
+          className="dark:bg-primary-foreground"
         >
           <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Chế độ</span>
+          <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all mr-2" />
           Sáng
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
+          <Moon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all mr-2" />
           Tối
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
+          <Laptop className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all mr-2" />
           Hệ thống
         </DropdownMenuItem>
       </DropdownMenuContent>
