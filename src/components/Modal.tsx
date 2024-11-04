@@ -4,6 +4,7 @@ import React from 'react';
 import CreateWorkspaceModal from '@/features/workspaces/components/CreateWorkspaceModal';
 import { useEffect, useState } from 'react';
 import CreateChannelModal from '@/features/channels/components/CreateChannelModal';
+import CreateVoteModal from '@/features/votes/components/CreateVoteModal';
 
 const Modals = () => {
   const [mounted, setMounted] = useState(false);
@@ -18,6 +19,7 @@ const Modals = () => {
     <>
       <CreateWorkspaceModal />
       <CreateChannelModal />
+      <CreateVoteModal />
     </>
   );
 };

@@ -179,7 +179,7 @@ const Editor = ({
     <div className="flex flex-col">
       <input
         type="file"
-        accept="image/*,video/*,.pdf,.doc,.docx"
+        accept="image/jpeg,image/png,video/*,.pdf,.doc,.docx"
         ref={imageElementRef}
         onChange={(event) => {
           const selectedFile = event.target.files?.[0];
@@ -205,7 +205,7 @@ const Editor = ({
         <div ref={containerRef} className={cn('h-full ql-custom')} />
 
         {!!image && (
-          <div className="p-2">
+          <div className="p-2 dark:bg-slate-900/[0.99]">
             <div className="relative size-[62px] flex items-center justify-center group/image">
               <Hint label="Bỏ chọn">
                 <button

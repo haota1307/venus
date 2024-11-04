@@ -1,12 +1,8 @@
-import {
-  AlertTriangle,
-  HashIcon,
-  Loader,
-  MessageSquareText,
-  SendHorizonal,
-} from 'lucide-react';
+import { AlertTriangle, HashIcon, Loader, Vote } from 'lucide-react';
 
-import SidebarItem from '@/app/workspace/[workspaceId]/SidebarItem';
+import SidebarItem, {
+  sidebarItemVariants,
+} from '@/app/workspace/[workspaceId]/SidebarItem';
 import WorkspaceHeader from '@/app/workspace/[workspaceId]/WorkspaceHeader';
 
 import { useGetChannels } from '@/features/channels/api/useGetChannels';
@@ -20,11 +16,18 @@ import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 
 import WorkspaceSection from '@/app/workspace/[workspaceId]/WorkspaceSection';
 import UserItem from '@/app/workspace/[workspaceId]/UserItem';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
   const memberId = useMemberId();
+
+  const pathname = usePathname();
+  const isActive = pathname === `/workspace/${workspaceId}/votes`;
 
   const [_, setOpen] = useCreateChannelModal();
 
@@ -41,7 +44,6 @@ const WorkspaceSidebar = () => {
     workspaceId,
   });
 
-  console.log({ member, members });
   if (workspaceLoading || memberLoading) {
     return (
       <div className="flex flex-col h-full items-center justify-center">
@@ -65,10 +67,24 @@ const WorkspaceSidebar = () => {
         workspace={workspace}
         isAdmin={member.role === 'admin'}
       />
-      {/* <div className="flex flex-col px-2 mt-3 ">
-        <SidebarItem label="Chủ đề" icon={MessageSquareText} id="threads" />
-        <SidebarItem label="Bản nháp & gửi" icon={SendHorizonal} id="drafts" />
-      </div> */}
+
+      <div className="flex flex-col  px-2 mt-3 ">
+        <Button
+          asChild
+          variant="transparent"
+          size="sm"
+          className={cn(
+            sidebarItemVariants({ variant: isActive ? 'active' : 'default' }),
+            'shrink-0 '
+          )}
+        >
+          <Link href={`/workspace/${workspaceId}/votes`}>
+            <Vote className="size-3.5 mr-1 shrink-0" />
+            <span className="text-sm truncate">Bình chọn</span>
+          </Link>
+        </Button>
+      </div>
+
       <WorkspaceSection
         label="Kênh chat"
         hint="Kênh chat mới"

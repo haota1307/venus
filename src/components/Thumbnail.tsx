@@ -19,7 +19,7 @@ interface ThumbnailProps {
 const Thumbnail = ({ url, type }: ThumbnailProps) => {
   if (!url || !type) return null;
 
-  const isImage = 'image/jpeg';
+  const isImageTypes = ['image/jpeg', 'image/png'];
   const isPDF = 'application/pdf';
   const isVideo = 'video/mp4';
 
@@ -53,11 +53,11 @@ const Thumbnail = ({ url, type }: ThumbnailProps) => {
     );
   }
 
-  if (type?.contentType === isImage) {
+  if (type?.contentType && isImageTypes.includes(type?.contentType)) {
     return (
       <Dialog>
         <DialogTrigger>
-          {type?.contentType === isImage && (
+          {isImageTypes.includes(type?.contentType) && (
             <div className="relative overflow-hidden max-w-[200px] border rounded-lg my-2 cursor-zoom-in">
               <img
                 src={url}
@@ -68,7 +68,7 @@ const Thumbnail = ({ url, type }: ThumbnailProps) => {
           )}
         </DialogTrigger>
         <DialogContent className="max-w-[600px] border-none bg-transparent p-0 shadow-none">
-          {type?.contentType === isImage && (
+          {isImageTypes.includes(type?.contentType) && (
             <img
               src={url}
               alt=""

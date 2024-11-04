@@ -14,6 +14,7 @@ import { Hint } from '@/components/hint';
 import { Doc } from '../../../../convex/_generated/dataModel';
 import PreferencesModal from '@/app/workspace/[workspaceId]/PreferencesModal';
 import InvateModal from '@/app/workspace/[workspaceId]/InvateModal';
+import { useCreateVoteModal } from '@/features/votes/store/useCreateVoteModal';
 
 interface WorkspaceHeaderProps {
   workspace: Doc<'workspaces'>;
@@ -23,6 +24,7 @@ interface WorkspaceHeaderProps {
 const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [invateModalOpen, setInvateModalOpen] = useState(false);
+  const [_, setOpen] = useCreateVoteModal();
 
   return (
     <>
@@ -90,14 +92,12 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
         </DropdownMenu>
 
         <div className="flex items-center gap-0.5 ">
-          <Hint label="Lọc cuộc trò chuyện" side="bottom">
-            <Button variant={'transparent'} size={'iconSm'}>
-              <ListFilter className="size-4 dark:text-slate-100" />
-            </Button>
-          </Hint>
-
-          <Hint label="Tin nhắn mới" side="bottom">
-            <Button variant={'transparent'} size={'iconSm'}>
+          <Hint label="Cuộc bình chọn mới" side="bottom">
+            <Button
+              variant={'transparent'}
+              size={'iconSm'}
+              onClick={() => setOpen(true)}
+            >
               <SquarePen className="size-4 dark:text-slate-100" />
             </Button>
           </Hint>

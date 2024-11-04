@@ -33,7 +33,7 @@ const SidebarItem = ({ icon: Icon, id, label, variant }: SidebarItemProps) => {
   );
 };
 
-const sidebarItemVariants = cva(
+export const sidebarItemVariants = cva(
   'flex items-center gap-1.5 justify-start font-normal h-7 px-[18px] text-sm overflow-hidden',
   {
     variants: {

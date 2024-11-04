@@ -19,8 +19,8 @@ const Sidebar = () => {
         label="Trang chủ"
         isActive={pathname.includes('/workspace')}
       />
-      {/* <SidebarButton icon={MessageSquare} label="Trò chuyện" />
-      <SidebarButton icon={Bell} label="Hoạt động" />
+      {/* <SidebarButton icon={MessageSquare} label="Trò chuyện" /> */}
+      {/* <SidebarButton icon={Bell} label="Hoạt động" />
       <SidebarButton icon={MoreHorizontal} label="Thêm" /> */}
       <div className="flex flex-col items-center justify-center gap-y-1 mt-auto mb-4">
         <ModeToggle />

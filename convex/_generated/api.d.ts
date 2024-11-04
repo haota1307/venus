@@ -25,6 +25,7 @@ import type * as messages from "../messages.js";
 import type * as reactions from "../reactions.js";
 import type * as upload from "../upload.js";
 import type * as users from "../users.js";
+import type * as votes from "../votes.js";
 import type * as workspaces from "../workspaces.js";
 
 /**
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   reactions: typeof reactions;
   upload: typeof upload;
   users: typeof users;
+  votes: typeof votes;
   workspaces: typeof workspaces;
 }>;
 export declare const api: FilterApi<
