@@ -19,10 +19,12 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
-import { useCreateWorkspace } from '@/features/workspaces/api/useCreateWorkspace';
 import { useCreateVoteModal } from '@/features/votes/store/useCreateVoteModal';
 import TextWithCounter from '@/components/TextWithCounter';
 import { Plus, Trash } from 'lucide-react';
+import { useCurrentUser } from '@/features/auth/api/useCurrentUser';
+import { useWorkspaceId } from '@/hooks/useWorkspaceId';
+import { useCreateVote } from '@/features/votes/api/useCreateVote';
 
 export const vote = {
   body: {
@@ -38,7 +40,8 @@ export const vote = {
 } as const;
 
 export const createLivePollSchema = z.object({
-  voteId: z.any(),
+  workspaceId: z.any(),
+  ownerId: z.any(),
   body: z
     .string()
     .min(vote.body.minLength, {
@@ -60,12 +63,29 @@ export const createLivePollSchema = z.object({
 });
 
 const CreateVoteModal = () => {
+  const [name, setName] = useState('');
+  const [open, setOpen] = useCreateVoteModal();
+
+  const router = useRouter();
+
+  const { mutate: createVote, isPending: voteCreating } = useCreateVote();
+  const { data: user } = useCurrentUser();
+
+  const workspaceId = useWorkspaceId();
+
+  const handleClose = () => {
+    setOpen(false);
+    form.reset();
+    setName('');
+  };
+
   const form = useForm<z.infer<typeof createLivePollSchema>>({
     resolver: zodResolver(createLivePollSchema),
     defaultValues: {
       body: '',
-      voteId: '',
       options: ['lựa chọn 1'],
+      ownerId: user?._id || '',
+      workspaceId: workspaceId || '',
     },
     mode: 'onSubmit',
   });
@@ -75,14 +95,23 @@ const CreateVoteModal = () => {
     name: 'options',
   });
 
-  const [name, setName] = useState('');
-  const [open, setOpen] = useCreateVoteModal();
+  const onSubmit = async (values: z.infer<typeof createLivePollSchema>) => {
+    if (!user) {
+      return;
+    }
+    const finalValues = {
+      ...values,
+      ownerId: user._id,
+      workspaceId: workspaceId,
+    };
 
-  const router = useRouter();
-
-  const handleClose = () => {
-    setOpen(false);
-    setName('');
+    createVote(finalValues, {
+      onSuccess() {
+        toast.success('Bình chọn đã được tạo đã được tạo!');
+        router.push(`/workspace/${workspaceId}/votes`);
+        handleClose();
+      },
+    });
   };
 
   return (
@@ -90,7 +119,7 @@ const CreateVoteModal = () => {
       <DialogContent>
         <DialogHeader>Tạo cuộc bình chọn</DialogHeader>
         <FormProvider {...form}>
-          <form>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               name="body"
               control={form.control}

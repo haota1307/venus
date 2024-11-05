@@ -46,7 +46,6 @@ const WorkspaceIdPage = () => {
     workspaceLoading,
     channelsLoading,
     workspace,
-    open,
     setOpen,
     router,
     workspaceId,

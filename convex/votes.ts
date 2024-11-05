@@ -5,7 +5,7 @@ import { getAuthUserId } from '@convex-dev/auth/server';
 export const createVote = mutation({
   args: {
     workspaceId: v.id('workspaces'),
-    ownerId: v.id('members'),
+    ownerId: v.id('users'),
     body: v.string(),
     options: v.array(v.string()),
   },

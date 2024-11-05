@@ -106,7 +106,7 @@ export default defineSchema({
     workspaceId: v.id('workspaces'),
     body: v.string(),
     isLive: v.boolean(),
-    ownerId: v.id('members'),
+    ownerId: v.id('users'),
   })
     .index('by_workspace_id', ['workspaceId'])
     .index('by_workspace_id_is_live', ['workspaceId', 'isLive']),

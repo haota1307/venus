@@ -5,6 +5,7 @@ import { Id } from '../../../../convex/_generated/dataModel';
 
 type RequestType = {
   workspaceId: Id<'workspaces'>;
+  ownerId: Id<'users'>;
   body: string;
   options: string[];
 };

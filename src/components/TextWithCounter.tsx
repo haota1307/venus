@@ -51,4 +51,6 @@ const TextWithCounter = forwardRef<HTMLTextAreaElement, Props>(
   }
 );
 
+TextWithCounter.displayName = 'TextWithCounter';
+
 export default TextWithCounter;
