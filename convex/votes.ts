@@ -120,6 +120,7 @@ export const getVotesByWorkspaceId = query({
     workspaceId: v.id('workspaces'),
   },
   handler: async (ctx, args) => {
+    // Lấy tất cả các vote trong workspace
     const votes = await ctx.db
       .query('votes')
       .withIndex('by_workspace_id', (q) =>
@@ -127,6 +128,51 @@ export const getVotesByWorkspaceId = query({
       )
       .collect();
 
-    return votes;
+    // Duyệt qua từng vote và lấy thêm thông tin vote options, số lượng bình chọn và thông tin người dùng
+    const votesWithDetails = await Promise.all(
+      votes.map(async (vote) => {
+        // Lấy các option của từng vote
+        const options = await ctx.db
+          .query('voteOptions')
+          .withIndex('by_poll_id', (q) => q.eq('voteId', vote._id))
+          .collect();
+
+        // Duyệt qua từng option để đếm số người bình chọn và lấy thông tin người dùng
+        const optionsWithCounts = await Promise.all(
+          options.map(async (option) => {
+            // Lấy danh sách voteRecords cho option này
+            const voteRecords = await ctx.db
+              .query('voteRecords')
+              .withIndex('by_vote_id_option_id', (q) =>
+                q.eq('voteId', vote._id).eq('voteOptionId', option._id)
+              )
+              .collect();
+
+            // Lấy thông tin người dùng cho mỗi voteRecord
+            const voters = await Promise.all(
+              voteRecords.map(async (record) => {
+                const user = await ctx.db.get(record.authorId);
+                return user;
+              })
+            );
+
+            return {
+              ...option,
+              voteCount: voteRecords.length,
+              voters: voters.filter(
+                (user): user is NonNullable<typeof user> => user !== null
+              ),
+            };
+          })
+        );
+
+        return {
+          ...vote,
+          options: optionsWithCounts,
+        };
+      })
+    );
+
+    return votesWithDetails;
   },
 });

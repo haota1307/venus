@@ -123,5 +123,7 @@ export default defineSchema({
     authorId: v.id('users'),
     voteId: v.id('votes'),
     voteOptionId: v.id('voteOptions'),
-  }).index('by_vote_id_author_id', ['voteId', 'authorId']),
+  })
+    .index('by_vote_id_author_id', ['voteId', 'authorId'])
+    .index('by_vote_id_option_id', ['voteId', 'voteOptionId']),
 });
