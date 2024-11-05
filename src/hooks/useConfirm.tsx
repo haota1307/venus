@@ -10,7 +10,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-export const useConfirm = (title: string, message: string): [() => JSX.Element, () => Promise<unknown>] => {
+export const useConfirm = (
+  title: string,
+  message: string
+): [() => JSX.Element, () => Promise<unknown>] => {
   const [promise, setPromise] = useState<{
     resolve: (value: boolean) => void;
   } | null>(null);
@@ -44,7 +47,9 @@ export const useConfirm = (title: string, message: string): [() => JSX.Element, 
           <Button onClick={handleCancel} variant="outline">
             Hủy
           </Button>
-          <Button onClick={handleConfirm}>Đồng ý</Button>
+          <Button variant={'destructive'} onClick={handleConfirm}>
+            Đồng ý
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

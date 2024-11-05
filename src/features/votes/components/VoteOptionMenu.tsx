@@ -11,7 +11,8 @@ import { EllipsisVertical, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { Id } from '../../../../convex/_generated/dataModel';
 import { useCurrentUser } from '@/features/auth/api/useCurrentUser';
-import DeleteVoteDialog from '@/features/votes/components/DeleteVoteDialog';
+import { useConfirm } from '@/hooks/useConfirm';
+import { Button } from '@/components/ui/button';
 
 interface VoteOption {
   _creationTime: number;
@@ -45,8 +46,10 @@ interface Props {
 
 const PollOptionsMenu = ({ vote, className }: Props) => {
   const user = useCurrentUser();
-
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [ConfirmDialog, confirm] = useConfirm(
+    'Bạn có chắc muốn xóa cuộc bình chọn?',
+    'Không thể hoàn tác hành động này. Thao tác này sẽ xóa vĩnh viễn cuộc bình chọn của bạn và tất cả các phiếu bầu.'
+  );
 
   const isAdmin = vote.ownerId === user?.data?._id;
 
@@ -54,8 +57,17 @@ const PollOptionsMenu = ({ vote, className }: Props) => {
     return null;
   }
 
+  const handleDeleteVote = async () => {
+    const ok = await confirm();
+
+    if (!ok) return;
+
+    return;
+  };
+
   return (
     <>
+      <ConfirmDialog />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <button className={className}>
@@ -63,22 +75,22 @@ const PollOptionsMenu = ({ vote, className }: Props) => {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="p-2 space-y-1">
-          <DropdownMenuItem
-            onSelect={() => setOpenDeleteDialog(true)}
-            className="text-sm text-destructive"
+          <Button
+            onClick={handleDeleteVote}
+            variant={'ghost'}
+            className="w-full"
           >
             <Trash className="mr-2 size-4" />
             <span>Xóa</span>
-          </DropdownMenuItem>
+          </Button>
+          {/* <DropdownMenuItem
+            onSelect={() => setOpenDeleteDialog(true)}
+            className="text-sm text-destructive"
+          >
+            
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <DeleteVoteDialog
-        voteId={vote._id}
-        open={openDeleteDialog}
-        onOpenChange={setOpenDeleteDialog}
-        onSuccess={() => setOpenDeleteDialog(false)}
-      />
     </>
   );
 };
