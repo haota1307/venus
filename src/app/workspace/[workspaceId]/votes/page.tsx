@@ -5,6 +5,8 @@ import { useGetVotesByWorkspaceId } from '@/features/votes/api/useGetVotesByWork
 import { Loader } from 'lucide-react';
 import { useGetWorkspace } from '@/features/workspaces/api/useGetWorkspace';
 import LiveVote from '@/features/votes/components/LiveVote';
+import ClosedVote from '@/features/votes/components/ClosedVote';
+import { Separator } from '@/components/ui/separator';
 
 const VotesPage = () => {
   const workspaceId = useWorkspaceId();
@@ -29,31 +31,25 @@ const VotesPage = () => {
     );
   }
 
+  // Sắp xếp votes: Live votes trước, Closed votes sau
+  const sortedVotes = votes?.sort((a, b) =>
+    a.isLive === b.isLive ? 0 : a.isLive ? -1 : 1
+  );
+
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-y-auto messages-scrollbar">
       <div className="border-b h-[49px] flex items-center px-4 overflow-hidden">
         Cuộc bình chọn - {workspace?.name}
       </div>
 
       <div className="flex flex-col gap-6 p-4">
-        {votes && votes.length > 0 ? (
-          votes.map((vote) => (
+        {sortedVotes && sortedVotes.length > 0 ? (
+          sortedVotes.map((vote, index) => (
             <div key={vote._id}>
               {vote.isLive ? (
-                <LiveVote
-                  _id={vote._id}
-                  _creationTime={vote._creationTime}
-                  workspaceId={vote.workspaceId}
-                  ownerId={vote.ownerId}
-                  body={vote.body}
-                  options={vote.options}
-                  isLive={vote.isLive}
-                  key={vote._id}
-                />
+                <LiveVote {...vote} key={vote._id} />
               ) : (
-                <div>{JSON.stringify(vote)}</div>
-
-                // <ClosedPoll poll={poll} />
+                <ClosedVote key={vote._id} {...vote} />
               )}
             </div>
           ))

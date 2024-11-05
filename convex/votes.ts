@@ -58,63 +58,6 @@ export const createVote = mutation({
   },
 });
 
-export const votePollOption = mutation({
-  args: {
-    voteId: v.id('votes'),
-    optionId: v.id('voteOptions'),
-  },
-  handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error('Người dùng chưa đăng nhập');
-
-    // Kiểm tra xem bình chọn đã tồn tại chưa
-    const existingVote = await ctx.db
-      .query('voteRecords')
-      .withIndex('by_vote_id_author_id', (q) =>
-        q.eq('voteId', args.voteId).eq('authorId', userId)
-      )
-      .unique();
-
-    // Nếu đã bình chọn, cập nhật lại bình chọn
-    if (existingVote) {
-      if (existingVote.voteOptionId === args.optionId) {
-        return;
-      }
-      // Cập nhật bình chọn
-      await ctx.db.patch(existingVote._id, { voteOptionId: args.optionId });
-
-      // // Cập nhật số lượng bình chọn cho tùy chọn
-      // await ctx.db.patch(args.optionId, {
-      //   _count: {
-      //     votes: ctx.db.patch(args.optionId, { _count: { votes: 1 } }),
-      //   },
-      // });
-
-      // // Giảm số lượng bình chọn cho tùy chọn cũ
-      // await ctx.db.patch(existingVote.optionId, {
-      //   _count: {
-      //     votes: ctx.db.patch(existingVote.optionId, { _count: { votes: -1 } }),
-      //   },
-      // });
-    }
-    //  else {
-    //   // Nếu chưa bình chọn, thêm bình chọn mới
-    //   await ctx.db.insert('votes', {
-    //     pollId: args.pollId,
-    //     userId,
-    //     optionId: args.optionId,
-    //   });
-
-    //   // Tăng số lượng bình chọn cho tùy chọn
-    //   await ctx.db.patch(args.optionId, {
-    //     _count: {
-    //       votes: ctx.db.patch(args.optionId, { _count: { votes: 1 } }),
-    //     },
-    //   });
-    // }
-  },
-});
-
 export const getVotesByWorkspaceId = query({
   args: {
     workspaceId: v.id('workspaces'),
@@ -174,5 +117,61 @@ export const getVotesByWorkspaceId = query({
     );
 
     return votesWithDetails;
+  },
+});
+
+export const vote = mutation({
+  args: {
+    voteId: v.id('votes'),
+    optionId: v.id('voteOptions'),
+    userId: v.id('users'),
+  },
+  handler: async (ctx, args) => {
+    // Kiểm tra xem người dùng đã bỏ phiếu chưa
+    const existingVoteRecord = await ctx.db
+      .query('voteRecords')
+      .withIndex('by_vote_id_author_id', (q) =>
+        q.eq('voteId', args.voteId).eq('authorId', args.userId)
+      )
+      .unique();
+
+    if (existingVoteRecord) {
+      // Nếu người dùng đã bình chọn cho một option khác, xóa option cũ
+      if (existingVoteRecord.voteOptionId !== args.optionId) {
+        await ctx.db.delete(existingVoteRecord._id);
+
+        // Tạo bản ghi mới với option mới
+        await ctx.db.insert('voteRecords', {
+          voteId: args.voteId,
+          voteOptionId: args.optionId,
+          authorId: args.userId,
+        });
+      }
+    } else {
+      // Nếu chưa có bình chọn, tạo bản ghi bình chọn mới
+      await ctx.db.insert('voteRecords', {
+        voteId: args.voteId,
+        voteOptionId: args.optionId,
+        authorId: args.userId,
+      });
+    }
+  },
+});
+
+export const endVote = mutation({
+  args: {
+    voteId: v.id('votes'),
+  },
+  handler: async (ctx, args) => {
+    // Kiểm tra xem cuộc bình chọn có tồn tại không
+    const vote = await ctx.db.get(args.voteId);
+    if (!vote) {
+      throw new Error('Cuộc bình chọn không tồn tại');
+    }
+
+    // Cập nhật isLive thành false để kết thúc cuộc bình chọn
+    await ctx.db.patch(args.voteId, { isLive: false });
+
+    return { success: true };
   },
 });

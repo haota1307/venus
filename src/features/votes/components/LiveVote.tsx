@@ -1,11 +1,15 @@
 import { PauseCircle, Radio, Users2 } from 'lucide-react';
 import { Id } from '../../../../convex/_generated/dataModel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import VoteOptionItem from '@/features/votes/components/VoteOptionItem';
 import VotersTooltip from '@/features/votes/components/VotersTooltip';
 import PollOptionsMenu from '@/features/votes/components/VoteOptionMenu';
+import { useVote } from '@/features/votes/api/useVote';
+import { useCurrentUser } from '@/features/auth/api/useCurrentUser';
+import { useConfirm } from '@/hooks/useConfirm';
+import { useEndVote } from '@/features/votes/api/useEndVote';
 
 interface VoteOption {
   _creationTime: number;
@@ -41,20 +45,70 @@ const LiveVote = ({
   ownerId,
   workspaceId,
 }: Vote) => {
+  const user = useCurrentUser();
+
   const [openCloseDialog, setOpenCloseDialog] = useState(false);
+
+  const [votedOptionIndex, setVotedOptionIndex] = useState<number | null>(null);
+
   const totalVotes = options.reduce((acc, option) => acc + option.voteCount, 0);
   const voters = options.flatMap((option) => option.voters);
-  const showEndButton = true; // Bạn có thể thay đổi điều kiện để hiện nút này nếu cần
-  const votedOptionIndex = -1; // Thay đổi logic này nếu bạn cần lưu trữ chỉ số tùy chọn đã được bỏ phiếu
-  const poll = { id: _id, body };
+
+  const showEndButton = ownerId === user.data?._id;
+
+  useEffect(() => {
+    // Tìm option mà người dùng hiện tại đã bình chọn
+    const votedIndex = options.findIndex((option) =>
+      option.voters.some((voter) => voter._id === user.data?._id)
+    );
+
+    // Cập nhật chỉ mục của option đã bình chọn, nếu tìm thấy
+    if (votedIndex !== -1) {
+      setVotedOptionIndex(votedIndex);
+    }
+  }, [options, user]);
+
+  const [ConfirmDialog, confirm] = useConfirm(
+    'Bạn có chắc muốn kết thúc cuộc bình chọn không?',
+    'Điều này sẽ vô hiệu hóa cuộc bình chọn và sẽ không ai có thể thay đổi sự lựa chọn.'
+  );
+
+  const { mutate: vote, isPending } = useVote();
+  const { mutate: endVote, isPending: voteEding } = useEndVote();
 
   const voteOption = (index: number) => {
-    // Logic xử lý bỏ phiếu ở đây
-    console.log(`Voted for option index: ${index}`);
+    const option = options[index]._id;
+    if (!isLive || isPending) return;
+
+    vote(
+      {
+        voteId: _id,
+        voteOptionId: option,
+        userId: user.data?._id!,
+      },
+      {
+        onSuccess: () => {
+          setVotedOptionIndex(index);
+          console.log(`Successfully voted for option index: ${index}`);
+        },
+        onError: (error) => {
+          console.error('Error voting:', error);
+        },
+      }
+    );
+  };
+
+  const handleEndVote = async () => {
+    const ok = await confirm();
+
+    if (!ok) return;
+
+    await endVote(_id);
   };
 
   return (
     <>
+      <ConfirmDialog />
       <div className={cn('border rounded-lg p-4')}>
         <div className="flex items-center gap-x-5">
           {/* Live badge */}
@@ -67,11 +121,7 @@ const LiveVote = ({
 
           {/* End button */}
           {showEndButton && (
-            <Button
-              size={'sm'}
-              variant={'destructive'}
-              onClick={() => setOpenCloseDialog(true)}
-            >
+            <Button size={'sm'} variant={'destructive'} onClick={handleEndVote}>
               <PauseCircle className="size-4 mr-2" />
               <span>Kết thúc</span>
             </Button>
@@ -116,14 +166,6 @@ const LiveVote = ({
           {totalVotes} bình chọn
         </p>
       </div>
-
-      {/* Close poll dialog (commented out for now) */}
-      {/* <ClosePollDialog
-        pollId={poll.id}
-        open={openCloseDialog}
-        onOpenChange={setOpenCloseDialog}
-        onSuccess={() => setOpenCloseDialog(false)}
-      /> */}
     </>
   );
 };

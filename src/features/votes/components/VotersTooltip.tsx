@@ -33,7 +33,7 @@ const VotersTooltip = ({ totalVotes, voters, className }: Props) => {
           <div className="flex -space-x-4">
             {votersToDisplay &&
               votersToDisplay.map((voter, index) => (
-                <Avatar className="size-6 mr-1 rounded-md">
+                <Avatar className="size-6 mr-1 rounded-md" key={index}>
                   <AvatarImage
                     className="rounded-md shadow-inner"
                     src={voter.image}
