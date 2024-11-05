@@ -229,14 +229,14 @@ const Editor = ({
         )}
 
         {!!file && (
-          <div className="p-2 flex items-center">
+          <div className="p-2 flex items-center dark:bg-slate-900/[0.99]">
             <Hint label="Bỏ chọn tệp">
               <button
                 onClick={() => {
                   setFile(null);
                   imageElementRef.current!.value = '';
                 }}
-                className="rounded-full bg-black/70 hover:bg-black text-white size-6 border-2 border-white p-1 mr-2"
+                className="rounded-full flex items-center justify-center bg-black/70 hover:bg-black text-white size-6 border-2 border-slate-500 p-1 mr-2"
               >
                 <XIcon className="size-3.5" />
               </button>

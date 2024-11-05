@@ -94,7 +94,7 @@ const PreferencesModal = ({
           <div className="px-4 pb-4 flex flex-col gap-y-2">
             <Dialog open={editOpen} onOpenChange={setEditOpen}>
               <DialogTrigger asChild>
-                <div className="px-5 py-4 rounded-lg border cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800">
+                <div className="px-5 py-4 rounded-lg border cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800/20">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold">Tên workspace</p>
                     <p className="text-sm text-indigo-500 hover:underline font-semibold">
