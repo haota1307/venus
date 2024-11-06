@@ -13,6 +13,7 @@ import { Id } from '../../../../convex/_generated/dataModel';
 import { useCurrentUser } from '@/features/auth/api/useCurrentUser';
 import { useConfirm } from '@/hooks/useConfirm';
 import { Button } from '@/components/ui/button';
+import { useDeleteVote } from '@/features/votes/api/useDeleteVote';
 
 interface VoteOption {
   _creationTime: number;
@@ -46,10 +47,13 @@ interface Props {
 
 const PollOptionsMenu = ({ vote, className }: Props) => {
   const user = useCurrentUser();
+
   const [ConfirmDialog, confirm] = useConfirm(
     'Bạn có chắc muốn xóa cuộc bình chọn?',
     'Không thể hoàn tác hành động này. Thao tác này sẽ xóa vĩnh viễn cuộc bình chọn của bạn và tất cả các phiếu bầu.'
   );
+
+  const { mutate: deleteVote } = useDeleteVote();
 
   const isAdmin = vote.ownerId === user?.data?._id;
 
@@ -59,10 +63,9 @@ const PollOptionsMenu = ({ vote, className }: Props) => {
 
   const handleDeleteVote = async () => {
     const ok = await confirm();
-
-    if (!ok) return;
-
-    return;
+    if (ok) {
+      await deleteVote({ voteId: vote._id });
+    }
   };
 
   return (

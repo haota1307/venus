@@ -32,7 +32,7 @@ export const createVote = mutation({
       .unique();
 
     if (existingLiveVote) {
-      return;
+      throw new Error('Đang có một bài vote đang diễn ra');
     }
 
     // Tạo cuộc bình chọn mới
@@ -127,7 +127,7 @@ export const vote = mutation({
     userId: v.id('users'),
   },
   handler: async (ctx, args) => {
-    // Kiểm tra xem người dùng đã bỏ phiếu chưa
+    // Kiểm tra xem người dùng đã bình chọn chưa
     const existingVoteRecord = await ctx.db
       .query('voteRecords')
       .withIndex('by_vote_id_author_id', (q) =>
@@ -136,8 +136,11 @@ export const vote = mutation({
       .unique();
 
     if (existingVoteRecord) {
-      // Nếu người dùng đã bình chọn cho một option khác, xóa option cũ
-      if (existingVoteRecord.voteOptionId !== args.optionId) {
+      if (existingVoteRecord.voteOptionId === args.optionId) {
+        // Nếu người dùng chọn lại option cũ, bỏ chọn (xóa bình chọn)
+        await ctx.db.delete(existingVoteRecord._id);
+      } else {
+        // Nếu người dùng đã bình chọn cho một option khác, xóa option cũ
         await ctx.db.delete(existingVoteRecord._id);
 
         // Tạo bản ghi mới với option mới
@@ -155,6 +158,44 @@ export const vote = mutation({
         authorId: args.userId,
       });
     }
+  },
+});
+
+export const deleteVote = mutation({
+  args: {
+    voteId: v.id('votes'),
+  },
+  handler: async (ctx, args) => {
+    // Kiểm tra xem cuộc bình chọn có tồn tại không
+    const vote = await ctx.db.get(args.voteId);
+    if (!vote) {
+      throw new Error('Cuộc bình chọn không tồn tại');
+    }
+
+    // Xóa tất cả các voteOptions và voteRecords liên quan đến vote này
+    const options = await ctx.db
+      .query('voteOptions')
+      .withIndex('by_poll_id', (q) => q.eq('voteId', args.voteId))
+      .collect();
+
+    // Xóa từng option và các voteRecords liên quan
+    for (const option of options) {
+      await ctx.db.delete(option._id);
+      const voteRecords = await ctx.db
+        .query('voteRecords')
+        .withIndex('by_vote_id_option_id', (q) =>
+          q.eq('voteId', args.voteId).eq('voteOptionId', option._id)
+        )
+        .collect();
+      for (const record of voteRecords) {
+        await ctx.db.delete(record._id);
+      }
+    }
+
+    // Xóa vote
+    await ctx.db.delete(args.voteId);
+
+    return { success: true };
   },
 });
 

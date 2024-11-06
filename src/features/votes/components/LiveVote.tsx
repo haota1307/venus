@@ -1,4 +1,4 @@
-import { PauseCircle, Radio, Users2 } from 'lucide-react';
+import { PauseCircle, Radio, Users2, Trash2 } from 'lucide-react';
 import { Id } from '../../../../convex/_generated/dataModel';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -13,7 +13,7 @@ import { useEndVote } from '@/features/votes/api/useEndVote';
 
 interface VoteOption {
   _creationTime: number;
-  _id: Id<'voteOptions'>; // Sử dụng Id cho các tùy chọn
+  _id: Id<'voteOptions'>;
   body: string;
   voteCount: number;
   voters: {
@@ -47,22 +47,16 @@ const LiveVote = ({
 }: Vote) => {
   const user = useCurrentUser();
 
-  const [openCloseDialog, setOpenCloseDialog] = useState(false);
-
   const [votedOptionIndex, setVotedOptionIndex] = useState<number | null>(null);
-
   const totalVotes = options.reduce((acc, option) => acc + option.voteCount, 0);
   const voters = options.flatMap((option) => option.voters);
 
-  const showEndButton = ownerId === user.data?._id;
+  const isOwner = ownerId === user.data?._id;
 
   useEffect(() => {
-    // Tìm option mà người dùng hiện tại đã bình chọn
     const votedIndex = options.findIndex((option) =>
       option.voters.some((voter) => voter._id === user.data?._id)
     );
-
-    // Cập nhật chỉ mục của option đã bình chọn, nếu tìm thấy
     if (votedIndex !== -1) {
       setVotedOptionIndex(votedIndex);
     }
@@ -74,36 +68,54 @@ const LiveVote = ({
   );
 
   const { mutate: vote, isPending } = useVote();
-  const { mutate: endVote, isPending: voteEding } = useEndVote();
+  const { mutate: endVote } = useEndVote();
 
   const voteOption = (index: number) => {
     const option = options[index]._id;
     if (!isLive || isPending) return;
 
-    vote(
-      {
-        voteId: _id,
-        voteOptionId: option,
-        userId: user.data?._id!,
-      },
-      {
-        onSuccess: () => {
-          setVotedOptionIndex(index);
-          console.log(`Successfully voted for option index: ${index}`);
+    if (votedOptionIndex === index) {
+      vote(
+        {
+          voteId: _id,
+          voteOptionId: option,
+          userId: user.data?._id!,
         },
-        onError: (error) => {
-          console.error('Error voting:', error);
+        {
+          onSuccess: () => {
+            setVotedOptionIndex(null);
+            console.log(`Successfully unvoted option index: ${index}`);
+          },
+          onError: (error) => {
+            console.error('Error unvoting:', error);
+          },
+        }
+      );
+    } else {
+      vote(
+        {
+          voteId: _id,
+          voteOptionId: option,
+          userId: user.data?._id!,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            setVotedOptionIndex(index);
+            console.log(`Successfully voted for option index: ${index}`);
+          },
+          onError: (error) => {
+            console.error('Error voting:', error);
+          },
+        }
+      );
+    }
   };
 
   const handleEndVote = async () => {
     const ok = await confirm();
-
-    if (!ok) return;
-
-    await endVote(_id);
+    if (ok) {
+      await endVote(_id);
+    }
   };
 
   return (
@@ -111,7 +123,6 @@ const LiveVote = ({
       <ConfirmDialog />
       <div className={cn('border rounded-lg p-4')}>
         <div className="flex items-center gap-x-5">
-          {/* Live badge */}
           {isLive && (
             <div className="inline-flex items-center px-2 py-1 bg-green-100 text-gray-700 text-xs rounded-full">
               <Radio className="size-4 animate-pulse fill-green-500 mr-2" />
@@ -119,34 +130,39 @@ const LiveVote = ({
             </div>
           )}
 
-          {/* End button */}
-          {showEndButton && (
-            <Button size={'sm'} variant={'destructive'} onClick={handleEndVote}>
-              <PauseCircle className="size-4 mr-2" />
-              <span>Kết thúc</span>
-            </Button>
+          {isOwner && (
+            <>
+              <Button
+                size={'sm'}
+                variant={'destructive'}
+                onClick={handleEndVote}
+              >
+                <PauseCircle className="size-4 mr-2" />
+                <span>Kết thúc</span>
+              </Button>
+            </>
           )}
 
           <div className="inline-flex items-center gap-x-3 ml-auto">
             <VotersTooltip totalVotes={totalVotes} voters={voters} />
-            <PollOptionsMenu
-              vote={{
-                _creationTime,
-                _id,
-                body,
-                isLive,
-                options,
-                ownerId,
-                workspaceId,
-              }}
-            />
+            {isOwner && (
+              <PollOptionsMenu
+                vote={{
+                  _creationTime,
+                  _id,
+                  body,
+                  isLive,
+                  options,
+                  ownerId,
+                  workspaceId,
+                }}
+              />
+            )}
           </div>
         </div>
 
-        {/* Poll body */}
         <p className="font-bold mt-4">{body}</p>
 
-        {/* Poll options */}
         <div className="space-y-3 mt-4" role="list">
           {options.map((option, index) => (
             <VoteOptionItem
@@ -160,7 +176,6 @@ const LiveVote = ({
           ))}
         </div>
 
-        {/* Total votes */}
         <p className="text-slate-400 text-sm mt-5 ml-3 inline-flex items-center justify-center">
           <Users2 className="inline-block mr-2" />
           {totalVotes} bình chọn

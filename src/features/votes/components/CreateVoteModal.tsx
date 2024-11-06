@@ -111,6 +111,12 @@ const CreateVoteModal = () => {
         router.push(`/workspace/${workspaceId}/votes`);
         handleClose();
       },
+      onError(err) {
+        console.log(err);
+        toast.error(
+          'Đang có cuộc bình chọn đang diễn ra. Mỗi workspace chỉ có 1 cuộn bình chọn diễn ra'
+        );
+      },
     });
   };
 
