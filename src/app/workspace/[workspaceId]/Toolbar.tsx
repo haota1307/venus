@@ -15,13 +15,14 @@ import { useGetMembers } from '@/features/members/api/useGetMembers';
 import { useGetWorkspace } from '@/features/workspaces/api/useGetWorkspace';
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 import { Headphones, Search, Video } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 const Toolbar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const workspaceId = useWorkspaceId();
+  const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
 
@@ -64,6 +65,10 @@ const Toolbar = () => {
 
     router.push(`?${currentParams.toString()}`);
   };
+
+  const isChannelPage = pathname.startsWith(
+    `/workspace/${workspaceId}/channel/`
+  );
 
   return (
     <nav className="bg-fuchsia-900 dark:bg-primary-foreground flex items-center justify-between h-10 p-1.5 w-full">
@@ -109,17 +114,25 @@ const Toolbar = () => {
       </div>
 
       <div className="ml-auto flex-1 flex items-center justify-end gap-x-2">
-        <Button variant={'transparent'} size={'iconSm'} onClick={handleCall}>
-          <Headphones className="size-5 text-white" />
-        </Button>
+        {isChannelPage && (
+          <>
+            <Button
+              variant={'transparent'}
+              size={'iconSm'}
+              onClick={handleCall}
+            >
+              <Headphones className="size-5 text-white" />
+            </Button>
 
-        <Button
-          variant={'transparent'}
-          size={'iconSm'}
-          onClick={handleVideoCall}
-        >
-          <Video className="size-5 text-white" />
-        </Button>
+            <Button
+              variant={'transparent'}
+              size={'iconSm'}
+              onClick={handleVideoCall}
+            >
+              <Video className="size-5 text-white" />
+            </Button>
+          </>
+        )}
       </div>
     </nav>
   );
