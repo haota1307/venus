@@ -141,12 +141,7 @@ const Header = ({ title }: HeaderProp) => {
                   />
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button
-                        variant="destructive"
-                        disabled={isUpdatingChannel}
-                      >
-                        Hủy
-                      </Button>
+                      <Button disabled={isUpdatingChannel}>Hủy</Button>
                     </DialogClose>
                     <Button disabled={isUpdatingChannel} type="submit">
                       Lưu
@@ -157,7 +152,7 @@ const Header = ({ title }: HeaderProp) => {
             </Dialog>
             {member?.role === 'admin' && (
               <Button
-                variant={'destructive'}
+                variant="ghost"
                 onClick={handleRemove}
                 disabled={isRemovingChannel}
                 className="flex justify-start gap-x-2 px-5 py-4 rounded-lg cursor-pointer border"

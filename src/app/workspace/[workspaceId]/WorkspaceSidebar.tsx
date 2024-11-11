@@ -79,7 +79,7 @@ const WorkspaceSidebar = () => {
           )}
         >
           <Link href={`/workspace/${workspaceId}/votes`}>
-            <Vote className="size-3.5 mr-1 shrink-0" />
+            <Vote className="size-4 mr-1 shrink-0" />
             <span className="text-sm truncate">Bình chọn</span>
           </Link>
         </Button>

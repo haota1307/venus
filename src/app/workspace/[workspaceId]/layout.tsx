@@ -41,7 +41,7 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
             maxSize={80}
             className="bg-fuchsia-900 dark:bg-primary-foreground"
           >
-            <div className="bg-fuchsia-800 dark:bg-slate-800/30  rounded-l-2xl h-full">
+            <div className="bg-fuchsia-800 dark:bg-slate-800/30 rounded-l-2xl h-full">
               <WorkspaceSidebar />
             </div>
           </ResizablePanel>

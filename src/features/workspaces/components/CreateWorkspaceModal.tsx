@@ -5,7 +5,12 @@ import { useRouter } from 'next/navigation';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 import { useCreateWorkspaceModal } from '@/features/workspaces/store/useCreateWorkspaceModal';
 import { useCreateWorkspace } from '@/features/workspaces/api/useCreateWorkspace';
@@ -43,7 +48,9 @@ const CreateWorkspaceModal = () => {
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
-        <DialogHeader>Tạo Workspace</DialogHeader>
+        <DialogHeader>
+          <DialogTitle>Tạo Workspace</DialogTitle>
+        </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             value={name}

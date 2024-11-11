@@ -73,7 +73,7 @@ const PreferencesModal = ({
       {
         onSuccess: () => {
           toast.success(`Đã xóa workspace ${value}`);
-          router.replace('/');
+          router.replace('/setup');
         },
         onError: () => {
           toast.error('Xóa workspace thất bại');
@@ -134,7 +134,7 @@ const PreferencesModal = ({
 
             <Button
               disabled={isRemovingWorkspace}
-              variant={'destructive'}
+              variant="ghost"
               onClick={handleRemove}
               className="flex items-center justify-start gap-x-2 px-5 py-4 rounded-lg border cursor-pointer"
             >

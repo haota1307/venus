@@ -37,7 +37,7 @@ export const useConfirm = (
   };
 
   const confirmDialog = () => (
-    <Dialog open={promise !== null}>
+    <Dialog open={promise !== null} onOpenChange={handleCancel}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -47,9 +47,7 @@ export const useConfirm = (
           <Button onClick={handleCancel} variant="outline">
             Hủy
           </Button>
-          <Button variant={'destructive'} onClick={handleConfirm}>
-            Đồng ý
-          </Button>
+          <Button onClick={handleConfirm}>Đồng ý</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

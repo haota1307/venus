@@ -54,7 +54,7 @@ const WorkspaceSection = ({
           </Hint>
         )}
       </div>
-      <div className="overflow-auto messages-scrollbar max-h-56">
+      <div className="overflow-auto messages-scrollbar max-h-56 mt-1">
         {on && children}
       </div>
     </div>

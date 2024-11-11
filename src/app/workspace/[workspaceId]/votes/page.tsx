@@ -39,7 +39,7 @@ const VotesPage = () => {
   return (
     <div className="flex flex-col h-full overflow-y-auto messages-scrollbar">
       <div className="border-b h-[49px] flex items-center px-4 overflow-hidden">
-        Cuộc bình chọn - {workspace?.name}
+        Bình chọn - {workspace?.name}
       </div>
 
       <div className="flex flex-col gap-6 p-4">

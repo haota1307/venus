@@ -92,7 +92,7 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
         </DropdownMenu>
 
         <div className="flex items-center gap-0.5 ">
-          <Hint label="Cuộc bình chọn mới" side="bottom">
+          <Hint label="Tạo cuộc bình chọn" side="bottom">
             <Button
               variant={'transparent'}
               size={'iconSm'}

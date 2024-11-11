@@ -84,7 +84,6 @@ const LiveVote = ({
         {
           onSuccess: () => {
             setVotedOptionIndex(null);
-            console.log(`Successfully unvoted option index: ${index}`);
           },
           onError: (error) => {
             console.error('Error unvoting:', error);
@@ -101,7 +100,6 @@ const LiveVote = ({
         {
           onSuccess: () => {
             setVotedOptionIndex(index);
-            console.log(`Successfully voted for option index: ${index}`);
           },
           onError: (error) => {
             console.error('Error voting:', error);
