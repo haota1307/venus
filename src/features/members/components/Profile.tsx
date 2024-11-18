@@ -92,7 +92,7 @@ const Profile = ({ memberId, onClose }: ProfileProps) => {
       { id: memberId },
       {
         onSuccess: () => {
-          router.replace('/');
+          router.replace('/setup');
           toast.success('Bạn đã rời khỏi workspace');
           onClose();
         },

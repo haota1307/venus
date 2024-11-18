@@ -8,18 +8,22 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 import { useCurrentMember } from '@/features/members/api/useCurrentMember';
+import { usePanel } from '@/hooks/usePanel';
 
-const userItemVariants = cva('flex items-center gap-1.5 justify-start font-normal h-7 px-4 text-sm overflow-hidden', {
-  variants: {
-    variant: {
-      default: 'text-[#F9EDFFCC]',
-      active: 'text-[#481349] bg-white/90 hover:bg-white/90',
+const userItemVariants = cva(
+  'flex items-center gap-1.5 justify-start font-normal h-7 px-4 text-sm overflow-hidden',
+  {
+    variants: {
+      variant: {
+        default: 'text-[#F9EDFFCC]',
+        active: 'text-[#481349] bg-white/90 hover:bg-white/90',
+      },
     },
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
 
 interface UserItemProps {
   id: Id<'members'>;
@@ -30,7 +34,11 @@ interface UserItemProps {
 
 const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
   const workspaceId = useWorkspaceId();
-  const { data: member, isLoading: memberLoading } = useCurrentMember({ workspaceId });
+  const { data: member, isLoading: memberLoading } = useCurrentMember({
+    workspaceId,
+  });
+
+  const { onOpenProfile } = usePanel();
 
   const avatarFallback = label.charAt(0).toUpperCase();
 
@@ -39,7 +47,11 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
   return (
     <Button
       variant="transparent"
-      className={cn(userItemVariants({ variant }), 'mb-1', id === currentUserId && 'hover:cursor-not-allowed')}
+      className={cn(
+        userItemVariants({ variant }),
+        'mb-1',
+        id === currentUserId && 'hover:cursor-not-allowed'
+      )}
       size="sm"
       asChild
     >
@@ -54,7 +66,7 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
           <span className="text-sm truncate">{label}</span>
         </Link>
       ) : (
-        <div>
+        <button onClick={() => onOpenProfile(id)}>
           <Avatar className="size-6 mr-1 rounded-md">
             <AvatarImage className="rounded-md shadow-inner" src={image} />
             <AvatarFallback className="bg-fuchsia-600 text-white shadow-md rounded-md text-sm">
@@ -63,7 +75,7 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
           </Avatar>
           <span className="text-sm truncate">{label}</span>
           <span className="text-sm truncate">(Bạn)</span>
-        </div>
+        </button>
       )}
     </Button>
   );

@@ -53,6 +53,3 @@ Venus là một ứng dụng web chat thời gian thực được phát triển 
   - Cuộc gọi video.
 
 - ✅ **Tính năng 7**: Người Dùng
-
-  - Cập nhật hồ sơ.
-  - Tham gia workspace.
