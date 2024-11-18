@@ -93,8 +93,9 @@ const Profile = ({ memberId, onClose }: ProfileProps) => {
       {
         onSuccess: () => {
           router.replace('/setup');
-          toast.success('Bạn đã rời khỏi workspace');
-          onClose();
+          setTimeout(() => {
+            toast.success('Bạn đã rời khỏi workspace');
+          }, 1000);
         },
         onError: () => {
           toast.error('Có lỗi xảy ra! rời khỏi workspace thất bại');

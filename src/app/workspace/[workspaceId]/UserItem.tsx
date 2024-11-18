@@ -50,7 +50,7 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
       className={cn(
         userItemVariants({ variant }),
         'mb-1',
-        id === currentUserId && 'hover:cursor-not-allowed'
+        id === currentUserId && 'hover:cursor-zoom-in'
       )}
       size="sm"
       asChild
