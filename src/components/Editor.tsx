@@ -169,7 +169,7 @@ const Editor = ({
   const onEmojiSelect = (emojiValue: string) => {
     const quill = quillRef.current;
 
-    quill?.insertText(quill.getSelection()?.index || 0, emojiValue);
+    quill?.insertText(quill.selection.savedRange.index || 0, emojiValue);
   };
 
   const isEmpty =

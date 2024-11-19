@@ -141,7 +141,9 @@ const Header = ({ title }: HeaderProp) => {
                   />
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button disabled={isUpdatingChannel}>Hủy</Button>
+                      <Button variant={'ghost'} disabled={isUpdatingChannel}>
+                        Hủy
+                      </Button>
                     </DialogClose>
                     <Button disabled={isUpdatingChannel} type="submit">
                       Lưu
