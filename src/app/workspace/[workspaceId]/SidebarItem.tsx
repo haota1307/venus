@@ -23,7 +23,7 @@ const SidebarItem = ({ icon: Icon, id, label, variant }: SidebarItemProps) => {
       asChild
       variant="transparent"
       size="sm"
-      className={cn(sidebarItemVariants({ variant }), 'shrink-0 ')}
+      className={cn(sidebarItemVariants({ variant }), 'shrink-0')}
     >
       <Link href={`/workspace/${workspaceId}/channel/${id}`}>
         <Icon className="size-3.5 mr-1 shrink-0" />

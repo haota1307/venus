@@ -49,7 +49,7 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
       variant="transparent"
       className={cn(
         userItemVariants({ variant }),
-        'mb-1',
+        'mb-1 shrink-0',
         id === currentUserId && 'hover:cursor-zoom-in'
       )}
       size="sm"
