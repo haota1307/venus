@@ -37,7 +37,7 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
         >
           <ResizablePanel
             defaultSize={20}
-            minSize={15}
+            minSize={0}
             maxSize={80}
             className="bg-fuchsia-900 dark:bg-primary-foreground"
           >

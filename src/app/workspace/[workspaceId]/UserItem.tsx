@@ -56,7 +56,10 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
       asChild
     >
       {id !== currentUserId ? (
-        <Link href={`/workspace/${workspaceId}/member/${id}`}>
+        <Link
+          href={`/workspace/${workspaceId}/member/${id}`}
+          className="shrink-0"
+        >
           <Avatar className="size-6 mr-1 rounded-md">
             <AvatarImage className="rounded-md shadow-inner" src={image} />
             <AvatarFallback className="bg-fuchsia-600 text-white shadow-md rounded-md text-sm">
@@ -66,7 +69,7 @@ const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
           <span className="text-sm truncate">{label}</span>
         </Link>
       ) : (
-        <button onClick={() => onOpenProfile(id)}>
+        <button onClick={() => onOpenProfile(id)} className="shrink-0">
           <Avatar className="size-6 mr-1 rounded-md">
             <AvatarImage className="rounded-md shadow-inner" src={image} />
             <AvatarFallback className="bg-fuchsia-600 text-white shadow-md rounded-md text-sm">
