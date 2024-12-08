@@ -84,9 +84,11 @@ const Editor = ({
       placeholder: placeholderRef.current,
       modules: {
         toolbar: [
-          ['bold', 'italic', 'strike'],
-          ['link'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+          [{ script: 'sub' }, { script: 'super' }],
+          [{ indent: '-1' }, { indent: '+1' }],
         ],
         keyboard: {
           bindings: {

@@ -33,7 +33,7 @@ const formatDateLabel = (dateStr: string) => {
 
   if (isYesterday(date)) return 'Hôm qua';
 
-  return format(dateStr, 'EEEE, d MMMM', { locale: vi });
+  return format(dateStr, 'EEEE, d MMMM, yyyy', { locale: vi });
 };
 
 const MessageList = ({

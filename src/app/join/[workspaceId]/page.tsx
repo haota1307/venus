@@ -101,5 +101,3 @@ const JoinPage = ({ params }: JoinPageProps) => {
 };
 
 export default JoinPage;
-
-//6:27:34
