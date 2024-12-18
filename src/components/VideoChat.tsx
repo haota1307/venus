@@ -80,24 +80,8 @@ const VideoChat = ({ user, channelId }: VideoChatProps) => {
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
       data-lk-theme="default"
     >
-      <VideoConference
-        chatMessageFormatter={(message) => (
-          <div className="flex items-start space-x-1 p-1 rounded-md shadow-sm">
-            <Avatar className="size-6 mr-1 rounded-md">
-              <AvatarImage
-                className="rounded-md shadow-inner"
-                src={user?.image}
-              />
-              <AvatarFallback className="bg-fuchsia-600 text-white shadow-md rounded-md text-sm">
-                {user?.name!.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <strong className="text-indigo-50">{user?.name}:</strong>
-            <p className="text-slate-50">{message}</p>
-          </div>
-        )}
-      />
-      <ControlBar controls={{ chat: false }} />
+      <ControlBar controls={{ chat: false }} variation="minimal" />
+      <VideoConference />
       <RoomAudioRenderer />
     </LiveKitRoom>
   );
