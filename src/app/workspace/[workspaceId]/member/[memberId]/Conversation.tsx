@@ -46,10 +46,7 @@ const Conversation = ({ id }: ConversationProps) => {
         isLoadingMore={status === 'LoadingMore'}
         canLoadMore={status === 'CanLoadMore'}
       />
-      <ChatInput
-        placeholder={`Gửi tin nhắn cho ${member?.user.name}`}
-        conversationId={id}
-      />
+      <ChatInput placeholder={`Nhắn gì đó`} conversationId={id} />
     </div>
   );
 };
