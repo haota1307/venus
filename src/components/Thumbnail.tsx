@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { FileIcon } from 'lucide-react';
+import Image from 'next/image';
 import { Id } from '../../convex/_generated/dataModel';
 
 interface ThumbnailProps {
@@ -59,9 +60,11 @@ const Thumbnail = ({ url, type }: ThumbnailProps) => {
         <DialogTrigger>
           {isImageTypes.includes(type?.contentType) && (
             <div className="relative overflow-hidden max-w-[200px] border rounded-lg my-2 cursor-zoom-in">
-              <img
+              <Image
                 src={url}
                 alt=""
+                width={200}
+                height={200}
                 className="rounded-md object-cover size-full"
               />
             </div>
@@ -69,9 +72,11 @@ const Thumbnail = ({ url, type }: ThumbnailProps) => {
         </DialogTrigger>
         <DialogContent className="max-w-[600px] border-none bg-transparent p-0 shadow-none">
           {isImageTypes.includes(type?.contentType) && (
-            <img
+            <Image
               src={url}
               alt=""
+              width={600}
+              height={400}
               className="rounded-md object-cover size-full"
             />
           )}
